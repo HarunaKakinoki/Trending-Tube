@@ -1,9 +1,11 @@
 import React from 'react'
+import Video from '../components/Video/Video';
 
 function VideoContainer() {
     return (
         <div>
-            Each Videos
+            <Video />
+            <Video />
         </div>
     )
 }
