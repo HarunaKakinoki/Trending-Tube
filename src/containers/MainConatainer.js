@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer'
 
 class MainConatainer extends Component {
     constructor(props) {
         super(props);
-    
-        this.inputRef = React.createRef();
 
         this.state = {
             location: "",
@@ -14,10 +12,14 @@ class MainConatainer extends Component {
             fetchedData: [],
             userInput: ""
         }
+
+         //Ref to the form input.
+         this.inputRef = React.createRef();
     }
 
     componentDidMount() {
         //Fetch Youtube Video Data for the first render.
+        console.log(process.env.REACT_APP_API_KEY)
     }
 
     getUserLocation = () => {
