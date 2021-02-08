@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import YoutubeApi from '../api/Youtube';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer'
 
@@ -19,7 +20,9 @@ class MainConatainer extends Component {
 
     componentDidMount() {
         //Fetch Youtube Video Data for the first render.
-        console.log(process.env.REACT_APP_API_KEY)
+        YoutubeApi.get("/search", { params: { q: 'japan' }}).then(res => {
+            console.log(res)
+        })
     }
 
     getUserLocation = () => {
