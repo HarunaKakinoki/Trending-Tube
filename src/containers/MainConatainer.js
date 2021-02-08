@@ -27,11 +27,11 @@ class MainConatainer extends Component {
         this.getUserLanguage();
     }
 
-    getUserLocation = () => {
+    setUserLocation = () => {
         //Get user's location from google geo location.
     }
 
-    getUserLanguage = () => {
+    setUserLanguage = () => {
         //Get user's language from browser.
         const lang = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
         this.setState({ language: lang });
@@ -48,7 +48,6 @@ class MainConatainer extends Component {
                 <h2>Most-viewed</h2>
                 <VideoContainer />
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission}/>
-                {this.state.language && this.state.language}
             </div>
         )
     }
