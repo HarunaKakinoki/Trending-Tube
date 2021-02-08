@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import YoutubeApi from '../api/Youtube';
+import YoutubeApi from '../utils/api/Youtube';
+import result from '../utils/api/GeoLocation';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer'
 
@@ -23,6 +24,7 @@ class MainConatainer extends Component {
         YoutubeApi.get("/search", { params: { q: 'japan' }}).then(res => {
             console.log(res)
         })
+        this.getUserLanguage();
     }
 
     getUserLocation = () => {
@@ -31,6 +33,8 @@ class MainConatainer extends Component {
 
     getUserLanguage = () => {
         //Get user's language from browser.
+        const lang = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
+        this.setState({ language: lang });
     }
     
     handleFormSubmission = (e) => {
@@ -44,6 +48,7 @@ class MainConatainer extends Component {
                 <h2>Most-viewed</h2>
                 <VideoContainer />
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission}/>
+                {this.state.language && this.state.language}
             </div>
         )
     }
