@@ -24,7 +24,7 @@ class MainConatainer extends Component {
         YoutubeApi.get("/search", { params: { q: 'japan' }}).then(res => {
             console.log(res)
         })
-        this.getUserLanguage();
+        this.setUserLanguage();
     }
 
     setUserLocation = () => {
