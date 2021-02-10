@@ -1,17 +1,33 @@
-function success(position) {
-    const latitude  = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    return { latitude, longitude }
-    // mapLink.href = `https://www.openstreetmap.org/#map=18/${latitude}/${longitude}`;
-    // mapLink.textContent = `Latitude: ${latitude} °, Longitude: ${longitude} °`;
-  }
+import { iso1A2Code } from '@ideditor/country-coder';
+import { DEFAULT_USER_LOCATION } from './Constatns';
 
-  let result = null;
-  if(!navigator.geolocation) {
-    console.log('no')
+const getUserCoordinates = () => {
+  return new Promise(function(resolve, reject) {
+    if (navigator.geolocation) {
+    　  navigator.geolocation.getCurrentPosition(position => {
+        resolve(position.coords);
+      }, err => {
+        resolve(err);
+      });
   } else {
-    result = navigator.geolocation.getCurrentPosition(success, err => { console.log(err)});
+    resolve("Not Supported by browser");
   }
+  });
+}
 
-  export default result;
+//Get user's location from Geolocation API.
+const getUserLocation = async () => {
+  let countryCode = DEFAULT_USER_LOCATION; //Deafult location => United States.
   
+  const coordinates = await getUserCoordinates();
+  
+  //When sucessfully get user coordinates.
+  if(coordinates.longitude && coordinates.latitude) {
+    const { longitude, latitude } = coordinates;
+    countryCode = iso1A2Code([longitude, latitude]);
+  } 
+
+  return countryCode;
+}
+
+export { getUserLocation };

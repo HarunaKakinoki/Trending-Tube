@@ -1,0 +1,3 @@
+const DEFAULT_USER_LOCATION = "US";
+
+export { DEFAULT_USER_LOCATION };

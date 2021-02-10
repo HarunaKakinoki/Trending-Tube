@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import YoutubeApi from '../utils/api/Youtube';
-import result from '../utils/api/GeoLocation';
+import { getUserLocation } from '../utils/api/GeoLocation'; 
 import SearchForm from '../components/SearchForm/SearchForm';
-import VideoContainer from './VideoContainer'
+import VideoContainer from './VideoContainer';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -28,16 +28,10 @@ class MainConatainer extends Component {
         // })
         
     }
-
-    setUserLocation = () => {
-        //Get user's location from google Geolocation API.
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
-              }, err => {
-                  console.log(err)
-              });
-        }
+    
+    setUserLocation = async() => {
+        const countryCode = await getUserLocation();
+        this.setState({ location: countryCode });
     }
 
     setUserLanguage = () => {
@@ -45,7 +39,7 @@ class MainConatainer extends Component {
         const lang = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
         this.setState({ language: lang });
     }
-    
+
     handleFormSubmission = (e) => {
         e.preventDefault();
         this.setState({ userInput: this.inputRef.current.value});
