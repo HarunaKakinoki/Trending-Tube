@@ -20,15 +20,24 @@ class MainConatainer extends Component {
     }
 
     componentDidMount() {
-        //Fetch Youtube Video Data for the first render.
-        YoutubeApi.get("/search", { params: { q: 'japan' }}).then(res => {
-            console.log(res)
-        })
         this.setUserLanguage();
+        this.setUserLocation();
+        //Fetch Youtube Video Data for the first render.
+        // YoutubeApi.get("/search", { params: { q: 'japan' }}).then(res => {
+        //     console.log(res)
+        // })
+        
     }
 
     setUserLocation = () => {
-        //Get user's location from google geo location.
+        //Get user's location from google Geolocation API.
+        if(navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+              }, err => {
+                  console.log(err)
+              });
+        }
     }
 
     setUserLanguage = () => {
