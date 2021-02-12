@@ -1,5 +1,5 @@
 import { iso1A2Code } from '@ideditor/country-coder';
-import { DEFAULT_USER_LOCATION } from './Constatns';
+import { DEFAULT_USER_LOCATION } from '../constants';
 
 const getUserCoordinates = () => {
   return new Promise(function(resolve, reject) {
