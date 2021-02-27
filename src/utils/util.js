@@ -14,7 +14,16 @@ const getLanguageDataByCountry = async () => {
   });
 
   return data;
-  
 }
 
-export { getLanguageDataByCountry };
+const saveDataToLocalStorage = (key, data) => {
+  localStorage.setItem(key, data);
+}
+
+const doesDataExistInLocalStorage = key => {
+  if (typeof(Storage) !== "undefined") {
+    return localStorage.getItem(key) !== null;
+  }
+}
+
+export { getLanguageDataByCountry, saveDataToLocalStorage, doesDataExistInLocalStorage };

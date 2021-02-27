@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import YoutubeApi from '../utils/api/Youtube';
 import { getUserLocation } from '../utils/api/GeoLocation';
-import { getLanguageDataByCountry } from '../utils/util'; 
+import { getLanguageDataByCountry, saveDataToLocalStorage, doesDataExistInLocalStorage } from '../utils/util'; 
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
+import { LANGUAGE_DATA_KEY } from '../utils/constants';
+import Youtube from '../utils/api/Youtube';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -23,40 +25,42 @@ class MainConatainer extends Component {
 
     componentDidMount() {
         this.setInitialData();
-        
-        //Fetch Youtube Video Data for the first render.
-        // YoutubeApi.get("/search", { params: { q: 'japan' }}).then(res => {
-        //     console.log(res)
-        // })
-        
     }
 
     setInitialData = async () => {
-        const languageData = await getLanguageDataByCountry();
+        let languageData = [];
         const userLocation = await getUserLocation();
         const userLanguage = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
+        
+        //Check if language data already stored in local storage.
+        if(doesDataExistInLocalStorage(LANGUAGE_DATA_KEY)) {
+            languageData = JSON.parse(localStorage.getItem(LANGUAGE_DATA_KEY));
+        } else {
+            languageData = await getLanguageDataByCountry();
+            languageData = JSON.stringify(languageData); //Convert object to JSON.
+            saveDataToLocalStorage(LANGUAGE_DATA_KEY, languageData);
+        }
 
         this.setState({
             countryLanguages: languageData,
             location: userLocation,
             language: userLanguage
-        });
+        }, () => this.fetchInitialYoutubeVideos());
     }
 
-    // setCountryLaunguageData = async() => {
-    //     const data = await getLanguageDataByCountry();s
-    //     this.setState({ countryLanguages: data});
-    // }
+    getLanguages = () => {
+      
+    }
 
-    // setUserLocation = async() => {
-       
-    //     this.setState({ location: countryCode });
-    // }
-
-    // setUserLanguage = () => {
-     
-    //     this.setState({ language: lang });
-    // }
+    fetchInitialYoutubeVideos = () => {
+        //Fetch which regions are available on Youtube.
+        // YoutubeApi.get("/i18nRegions", { params: { }}).then(res => {
+        //     //Check languages used in each country & stored them onto localsotrage.
+        //     if(res) {
+        //         console.log()
+        //     }
+        // });
+    }
 
     handleFormSubmission = (e) => {
         e.preventDefault();
