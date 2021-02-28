@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import YoutubeApi from '../utils/api/Youtube';
 import { getUserLocation } from '../utils/api/GeoLocation';
-import { getLanguageDataByCountry, saveDataToLocalStorage, doesDataExistInLocalStorage } from '../utils/util'; 
+import { getLanguageDataByCountry, doesDataExistInLocalStorage } from '../utils/util';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
 import { LANGUAGE_DATA_KEY } from '../utils/constants';
@@ -19,8 +19,8 @@ class MainConatainer extends Component {
             userInput: ""
         }
 
-         //Ref to the form input.
-         this.inputRef = React.createRef();
+        //Ref to the form input.
+        this.inputRef = React.createRef();
     }
 
     componentDidMount() {
@@ -31,13 +31,18 @@ class MainConatainer extends Component {
         let languageData = [];
         const userLocation = await getUserLocation();
         const userLanguage = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
-        
-        //Check if language data already stored in local storage.
-        if(doesDataExistInLocalStorage(LANGUAGE_DATA_KEY)) {
-            languageData = JSON.parse(localStorage.getItem(LANGUAGE_DATA_KEY));
+
+        //Check browser support local storage or not.
+        if (typeof localStorage) {
+            //Check if language data already stored in local storage.
+            if (doesDataExistInLocalStorage(LANGUAGE_DATA_KEY)) {
+                languageData = JSON.parse(localStorage.getItem(LANGUAGE_DATA_KEY));
+            } else {
+                languageData = await getLanguageDataByCountry();
+                localStorage.setItem(LANGUAGE_DATA_KEY, JSON.stringify(languageData));
+            }
         } else {
             languageData = await getLanguageDataByCountry();
-            saveDataToLocalStorage(LANGUAGE_DATA_KEY, JSON.stringify(languageData));
         }
 
         this.setState({
@@ -45,10 +50,6 @@ class MainConatainer extends Component {
             location: userLocation,
             language: userLanguage
         }, () => this.fetchInitialYoutubeVideos());
-    }
-
-    getLanguages = () => {
-      
     }
 
     fetchInitialYoutubeVideos = () => {
@@ -60,19 +61,19 @@ class MainConatainer extends Component {
         console.log(this.state.language)
         //Fetch Proper Videos based on user's location.
         // YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}&regionCode=${this.state.location}`).then(res => {
-            
+
         // });
 
-       languagesBasedOnLocaiton.map(language => {
+        languagesBasedOnLocaiton.map(language => {
             YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}&hl=${language}`).then(res => {
                 //console.log(res, 'based on language');
             });
-       })
+        })
     }
 
     handleFormSubmission = (e) => {
         e.preventDefault();
-        this.setState({ userInput: this.inputRef.current.value});
+        this.setState({ userInput: this.inputRef.current.value });
     }
 
     render() {
@@ -80,7 +81,7 @@ class MainConatainer extends Component {
             <div>
                 <h2>Most-viewed</h2>
                 <VideoContainer />
-                <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission}/>
+                <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
             </div>
         )
     }
