@@ -37,8 +37,7 @@ class MainConatainer extends Component {
             languageData = JSON.parse(localStorage.getItem(LANGUAGE_DATA_KEY));
         } else {
             languageData = await getLanguageDataByCountry();
-            languageData = JSON.stringify(languageData); //Convert object to JSON.
-            saveDataToLocalStorage(LANGUAGE_DATA_KEY, languageData);
+            saveDataToLocalStorage(LANGUAGE_DATA_KEY, JSON.stringify(languageData));
         }
 
         this.setState({
@@ -53,13 +52,22 @@ class MainConatainer extends Component {
     }
 
     fetchInitialYoutubeVideos = () => {
-        //Fetch which regions are available on Youtube.
-        // YoutubeApi.get("/i18nRegions", { params: { }}).then(res => {
-        //     //Check languages used in each country & stored them onto localsotrage.
-        //     if(res) {
-        //         console.log()
-        //     }
+        console.log(this.state.countryLanguages)
+        const languagesBasedOnLocaiton = this.state.countryLanguages.filter(country => country.ISO === this.state.location) || [window.navigator.browserLanguage];
+        const isUserLanguageIncluded = languagesBasedOnLocaiton.find(language => language.Languages === this.state.language);
+        const BASE_URL_TO_FETCH_VIDEOS = "/videos?order=viewCount&chart=mostPopular&type=video";
+        console.log(languagesBasedOnLocaiton)
+        console.log(this.state.language)
+        //Fetch Proper Videos based on user's location.
+        // YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}&regionCode=${this.state.location}`).then(res => {
+            
         // });
+
+       languagesBasedOnLocaiton.map(language => {
+            YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}&hl=${language}`).then(res => {
+                //console.log(res, 'based on language');
+            });
+       })
     }
 
     handleFormSubmission = (e) => {
