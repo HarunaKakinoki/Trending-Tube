@@ -1,10 +1,14 @@
 import React from 'react'
 
-function Video() {
+function Video({data, videoId}) {
+    const VIDEO_BASE_URL = `https://www.youtube.com/embed/`;
+    const url = `${VIDEO_BASE_URL}${videoId}`
+  
     return (
-        <div>
-            Video
-        </div>
+        <React.Fragment>
+            <iframe src={url} title={data.title}></iframe>
+            {data.title}
+        </React.Fragment>
     )
 }
 

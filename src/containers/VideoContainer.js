@@ -1,11 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Video from '../components/Video/Video';
 
-function VideoContainer() {
+function VideoContainer({ videos }) {
     return (
         <div>
-            <Video />
-            <Video />
+            {videos && videos.map(video => {
+                return <Video key={video.id} videoId={video.id} data={video.snippet}/>;
+            })}
         </div>
     )
 }
