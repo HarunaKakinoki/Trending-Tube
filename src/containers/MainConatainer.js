@@ -13,12 +13,14 @@ class MainConatainer extends Component {
 
         this.state = {
             location: "",
+            locationFullName: "",
             language: "",
             countryBasicData: [],
             videos: [],
             userInput: "",
             error: false,
-            isLoading: false
+            isLoading: true,
+            label: ""
         }
 
         //Ref to the form input.
@@ -47,18 +49,21 @@ class MainConatainer extends Component {
             countryData = await getCountryDataFromFile();
         }
 
+        const userLocationFullName = countryData.find(country => country.ISO === userLocation).Country;
+
         this.setState({
             countryBasicData: countryData,
             location: userLocation,
             language: userLanguage,
-            isLoading: true
+            userLocationFullName
         }, () => this.fetchInitialYoutubeVideos());
     }
 
     fetchInitialYoutubeVideos = () => {
+
             //Fetch Proper Videos based on user's location.
             YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${this.state.location}&hl=${this.state.language}`).then(res => {
-                this.setState({ videos: res.data.items, isLoading: false, error: false });
+                this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most popular videos in your location ${this.state.userLocationFullName}` });
             }).catch(err => this.setState({ isLoading: false, error: true }));
     }
 
@@ -74,7 +79,8 @@ class MainConatainer extends Component {
             } else {
                 //Fetch videos based on user input.
                 YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${selectedCountry.ISO}&hl=${this.state.language}`).then(res => {
-                    this.setState({ videos: res.data.items, isLoading: false, error: false });
+                    const userLocationFullName = this.state.countryBasicData.find(country => country.ISO === selectedCountry.ISO).Country;
+                    this.setState({ videos: res.data.items, isLoading: false, error: false , label: `Most Popular videos in ${userLocationFullName}`});
                 }).catch(err => this.setState({ isLoading: false, error: true }));
             }
 
@@ -82,17 +88,18 @@ class MainConatainer extends Component {
     }
 
     render() {
-        const { isLoading, error, videos } = this.state;
+        const { isLoading, error, videos, label } = this.state;
         return (
             <div>
-                <h2>Most-viewed</h2>
+                <h2>Most-Viewed </h2>
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
+                {label}
                 {isLoading ?
                      <Loader
                      type="ThreeDots"
                      color="#00BFFF"
-                     height={100}
-                     width={100}
+                     height={50}
+                     width={50}
                    /> :
                     error ? 
                     <p>Error</p> :
