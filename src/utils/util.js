@@ -1,5 +1,5 @@
 
-const getLanguageDataByCountry = async () => {
+const getCountryDataFromFile = async () => {
   const data = await fetch('data/data.json'
     , {
       headers: {
@@ -22,4 +22,4 @@ const doesDataExistInLocalStorage = key => {
   }
 }
 
-export { getLanguageDataByCountry, doesDataExistInLocalStorage };
+export { getCountryDataFromFile, doesDataExistInLocalStorage };

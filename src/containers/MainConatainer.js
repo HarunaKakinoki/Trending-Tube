@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import YoutubeApi from '../utils/api/Youtube';
 import { getUserLocation } from '../utils/api/GeoLocation';
-import { getLanguageDataByCountry, doesDataExistInLocalStorage } from '../utils/util';
+import { getCountryDataFromFile, doesDataExistInLocalStorage } from '../utils/util';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
-import { COUNTRY_DATA_KEY } from '../utils/constants';
+import { COUNTRY_DATA_KEY, BASE_URL_TO_FETCH_VIDEOS } from '../utils/constants';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -14,8 +14,10 @@ class MainConatainer extends Component {
             location: "",
             language: "",
             countryBasicData: [],
-            initialVideos: [],
-            userInput: ""
+            videos: [],
+            userInput: "",
+            error: false,
+            isLoading: false
         }
 
         //Ref to the form input.
@@ -37,11 +39,11 @@ class MainConatainer extends Component {
             if (doesDataExistInLocalStorage(COUNTRY_DATA_KEY)) {
                 countryData = JSON.parse(localStorage.getItem(COUNTRY_DATA_KEY));
             } else {
-                countryData = await getLanguageDataByCountry();
+                countryData = await getCountryDataFromFile();
                 localStorage.setItem(COUNTRY_DATA_KEY, JSON.stringify(countryData));
             }
         } else {
-            countryData = await getLanguageDataByCountry();
+            countryData = await getCountryDataFromFile();
         }
 
         this.setState({
@@ -52,25 +54,39 @@ class MainConatainer extends Component {
     }
 
     fetchInitialYoutubeVideos = () => {
-        const BASE_URL_TO_FETCH_VIDEOS = "/videos";
-        
         //Fetch Proper Videos based on user's location.
-        YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&snippet&regionCode=${this.state.location}&hl=${this.state.language}`).then(res => {
-            this.setState({ initialVideos: res.data.items });
-        });
+        YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${this.state.location}&hl=${this.state.language}`).then(res => {
+            this.setState({ videos: res.data.items });
+        }).catch(err => this.setState({ error: true }));
     }
 
     handleFormSubmission = (e) => {
         e.preventDefault();
-        this.setState({ userInput: this.inputRef.current.value });
+
+        this.setState({ userInput: this.inputRef.current.value }, () => {
+            const userInput = this.state.userInput;
+            const selectedCountry = this.state.countryBasicData.find(country => country.Country.toLowerCase() === userInput.toLowerCase());
+
+            if (selectedCountry === undefined) {
+                this.setState({ error: true });
+            } else {
+                //Fetch videos based on user input.
+                YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${selectedCountry.ISO}&hl=${this.state.language}`).then(res => {
+                    this.setState({ videos: res.data.items, error: false });
+                });
+            }
+
+        });
     }
 
     render() {
         return (
             <div>
                 <h2>Most-viewed</h2>
-                <VideoContainer videos={this.state.initialVideos}/>
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
+                {!this.state.error ? <VideoContainer videos={this.state.videos} /> : <p>Error occured</p>
+                }
+                 
             </div>
         )
     }
