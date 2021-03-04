@@ -63,7 +63,7 @@ class MainConatainer extends Component {
     fetchInitialYoutubeVideos = () => {
 
         //Fetch Proper Videos based on user's location.
-        YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${this.state.location}&hl=${this.state.language}`).then(res => {
+        YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${this.state.location}&hl=${this.state.language}&maxResults=200`).then(res => {
             this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most popular videos in your location ${this.state.userLocationFullName}` });
         }).catch(err => this.setState({ isLoading: false, error: true }));
     }
@@ -79,7 +79,7 @@ class MainConatainer extends Component {
                 this.setState({ isLoading: false, error: true });
             } else {
                 //Fetch videos based on user input.
-                YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${selectedCountry.ISO}&hl=${this.state.language}`).then(res => {
+                YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${selectedCountry.ISO}&hl=${this.state.language}&maxResults=200`).then(res => {
                     const userLocationFullName = this.state.countryBasicData.find(country => country.ISO === selectedCountry.ISO).Country;
                     this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most Popular videos in ${userLocationFullName}` });
                 }).catch(err => this.setState({ isLoading: false, error: true }));
@@ -90,26 +90,32 @@ class MainConatainer extends Component {
 
     render() {
         const { isLoading, error, videos, label } = this.state;
-        return (
-                <div>
-                    <h2>Most-viewed</h2>
-                    <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
-                    {label}
-                    {isLoading ?
-                        <Loader
-                            type="ThreeDots"
-                            color="#00BFFF"
-                            height={50}
-                            width={50}
-                        /> :
-                        error ?
-                            <p>Error</p> :
-                            <VideoContainer videos={videos} />
-                    }
-                    <Link to="/all">See all popular videos...</Link>
-                </div>
+        const videosToDispaly = videos.slice(0, 5); //Dispaly only 5 videos on index page.
 
-              
+        return (
+            <div>
+                <h2>Most-viewed</h2>
+                <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
+                {label}
+                {isLoading ?
+                    <Loader
+                        type="ThreeDots"
+                        color="#00BFFF"
+                        height={50}
+                        width={50}
+                    /> :
+                    error ?
+                        <p>Error</p> :
+                        <React.Fragment>
+                            <VideoContainer videos={videosToDispaly} />
+                            <Link to={{
+                                pathname: '/all',
+                                state: { videos: this.state.videos }}}> See all popular videos...</Link>
+                        </React.Fragment>
+                }
+            </div>
+
+
         )
     }
 }

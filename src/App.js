@@ -5,8 +5,9 @@ import AllVideosContainer from './containers/AllVideosContainer';
 
 function App() {
   return (
-    <Switch>
-      <div className="App">
+    <div className="App">
+      
+      <Switch>
 
         {/* Index */}
         <Route exact path="/" exact>
@@ -17,9 +18,11 @@ function App() {
         <Route exact path="/all" exact>
           <AllVideosContainer />
         </Route>
+      
+      </Switch>
 
-      </div>
-    </Switch>
+    </div>
+
   );
 }
 
