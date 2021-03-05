@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
+import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../../utils/constants';
 
 function Video({data, videoId}) {
-    const VIDEO_BASE_URL = `https://www.youtube.com/embed/`;
-    const url = `${VIDEO_BASE_URL}${videoId}`
+    const url = `${BASE_URL_TO_YOUTUBE_VIDEOS}${videoId}`
   
     return (
         <React.Fragment>

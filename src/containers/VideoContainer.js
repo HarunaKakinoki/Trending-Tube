@@ -1,5 +1,6 @@
-import React from 'react'
+import React from 'react';
 import Video from '../components/Video/Video';
+
 
 function VideoContainer({ videos }) {
     return (
