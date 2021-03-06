@@ -6,7 +6,7 @@ import { getUserLocation } from '../utils/api/GeoLocation';
 import { doesDataExistInSessionStorage } from '../utils/util';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
-import { BASE_URL_TO_FETCH_VIDEOS } from '../utils/constants';
+import { BASE_URL_TO_FETCH_VIDEOS, VIDEOS_KEY } from '../utils/constants';
 import { countryData } from '../data/data';
 
 class MainConatainer extends Component {
@@ -60,7 +60,7 @@ class MainConatainer extends Component {
     }
 
     fetchInitialYoutubeVideos = () => {
-        if (doesDataExistInSessionStorage("videos")) {
+        if (doesDataExistInSessionStorage(VIDEOS_KEY)) {
             const videos = JSON.parse(sessionStorage.getItem('videos'));
             this.setState({ videos: videos, isLoading: false, error: false});
         } else {
@@ -68,7 +68,7 @@ class MainConatainer extends Component {
             YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${this.state.location}&hl=${this.state.language}&maxResults=200`).then(res => {
                 this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most popular videos in your location ${this.state.userLocationFullName}` });
                 if (typeof sessionStorage) {
-                    sessionStorage.setItem("videos", JSON.stringify(res.data.items));
+                    sessionStorage.setItem(VIDEOS_KEY, JSON.stringify(res.data.items));
                 }
             }).catch(err => this.setState({ isLoading: false, error: true }));
         }
@@ -89,7 +89,7 @@ class MainConatainer extends Component {
                     const userLocationFullName = this.state.countryBasicData.find(country => country.ISO === selectedCountry.ISO).Country;
                     this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most Popular videos in ${userLocationFullName}` });
                     if (typeof sessionStorage) {
-                        sessionStorage.setItem("videos", JSON.stringify(res.data.items));
+                        sessionStorage.setItem(VIDEOS_KEY, JSON.stringify(res.data.items));
                     }
                 }).catch(err => this.setState({ isLoading: false, error: true }));
             }
@@ -103,7 +103,7 @@ class MainConatainer extends Component {
 
         return (
             <div>
-                <h2>Most-viewed</h2>
+                <Link to="/">Most-Viewed</Link>
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
                 {label}
                 {isLoading ?

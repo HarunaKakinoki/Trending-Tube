@@ -1,10 +1,20 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useHistory, useLocation, Link } from 'react-router-dom';
 import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../utils/constants';
 
 function AllVideosContainer() {
+    let videos;
+    const history = useHistory();
     const location = useLocation();
-    const { videos } = location.state;
+    if(history.location.state === undefined) {
+        history.push("/");
+    } else {
+        videos = location.state.videos;
+    }
+       
+    
+   
+    
 
     return (
         <div>
