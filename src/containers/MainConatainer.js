@@ -3,10 +3,11 @@ import { Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
 import YoutubeApi from '../utils/api/Youtube';
 import { getUserLocation } from '../utils/api/GeoLocation';
-import { getCountryDataFromFile, doesDataExistInLocalStorage } from '../utils/util';
+import { doesDataExistInLocalStorage } from '../utils/util';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
-import { COUNTRY_DATA_KEY, BASE_URL_TO_FETCH_VIDEOS } from '../utils/constants';
+import { BASE_URL_TO_FETCH_VIDEOS } from '../utils/constants';
+import { countryData } from '../data/data';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -16,7 +17,7 @@ class MainConatainer extends Component {
             location: "",
             locationFullName: "",
             language: "",
-            countryBasicData: [],
+            countryBasicData: countryData,
             videos: [],
             userInput: "",
             error: false,
@@ -33,27 +34,25 @@ class MainConatainer extends Component {
     }
 
     setInitialData = async () => {
-        let countryData = [];
         const userLocation = await getUserLocation();
         const userLanguage = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
 
         //Check browser support local storage or not.
-        if (typeof localStorage) {
-            //Check if language data already stored in local storage.
-            if (doesDataExistInLocalStorage(COUNTRY_DATA_KEY)) {
-                countryData = JSON.parse(localStorage.getItem(COUNTRY_DATA_KEY));
-            } else {
-                countryData = await getCountryDataFromFile();
-                localStorage.setItem(COUNTRY_DATA_KEY, JSON.stringify(countryData));
-            }
-        } else {
-            countryData = await getCountryDataFromFile();
-        }
+        // if (typeof localStorage) {
+        //     //Check if language data already stored in local storage.
+        //     if (doesDataExistInLocalStorage(COUNTRY_DATA_KEY)) {
+        //         countryData = JSON.parse(localStorage.getItem(COUNTRY_DATA_KEY));
+        //     } else {
+        //         //countryData = await getCountryDataFromFile();
+        //         localStorage.setItem(COUNTRY_DATA_KEY, JSON.stringify(countryData));
+        //     }
+        // } else {
+        //     //countryData = await getCountryDataFromFile();
+        // }
 
-        const userLocationFullName = countryData.find(country => country.ISO === userLocation).Country;
+        const userLocationFullName = this.state.countryBasicData.find(country => country.ISO === userLocation).Country;
 
         this.setState({
-            countryBasicData: countryData,
             location: userLocation,
             language: userLanguage,
             userLocationFullName
@@ -61,7 +60,6 @@ class MainConatainer extends Component {
     }
 
     fetchInitialYoutubeVideos = () => {
-
         //Fetch Proper Videos based on user's location.
         YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${this.state.location}&hl=${this.state.language}&maxResults=200`).then(res => {
             this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most popular videos in your location ${this.state.userLocationFullName}` });
@@ -110,7 +108,8 @@ class MainConatainer extends Component {
                             <VideoContainer videos={videosToDispaly} />
                             <Link to={{
                                 pathname: '/all',
-                                state: { videos: this.state.videos }}}> See all popular videos...</Link>
+                                state: { videos: this.state.videos }
+                            }}> See all popular videos...</Link>
                         </React.Fragment>
                 }
             </div>

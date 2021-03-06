@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../utils/constants';
 
 function AllVideosContainer() {
@@ -8,6 +8,7 @@ function AllVideosContainer() {
 
     return (
         <div>
+            <Link to="/">Most-Viewed</Link>
             { videos &&
                 <table>
                     <tbody>
