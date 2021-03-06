@@ -31,6 +31,7 @@ class MainConatainer extends Component {
     }
 
     componentDidMount() {
+        console.log('didmount')
         this.setInitialData();
     }
 
@@ -41,7 +42,7 @@ class MainConatainer extends Component {
     setInitialData = async () => {
         const userLocation = await getUserLocation();
         const userLanguage = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
-
+        console.log(userLanguage)
         //Check browser support local storage or not.
         // if (typeof localStorage) {
         //     //Check if language data already stored in local storage.
