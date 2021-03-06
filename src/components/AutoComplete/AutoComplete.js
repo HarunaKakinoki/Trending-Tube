@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { countryData } from '../../data/data';
 
 const AutoComplete = React.forwardRef((props, ref) => { {
+    console.log("AUTOCOMPLNET RENDEr")
     const countryOptions = countryData.map(country => country.Country);
     const [userInput, setUserInput] = useState("");
     const [suggestions, setSuggestions] = useState([]);
@@ -9,7 +10,7 @@ const AutoComplete = React.forwardRef((props, ref) => { {
     const handleInputChange = (e) => {
         const term = e.target.value;
         setUserInput(term);
-        setSuggestions(filterInput(term));
+        setSuggestions(getSuggestionsFromInput(term));
     }
 
     const handleSuggestionClick = (e) => {
@@ -17,15 +18,11 @@ const AutoComplete = React.forwardRef((props, ref) => { {
         setSuggestions([]);
     }
 
-    const filterInput = input => {
+    const getSuggestionsFromInput = input => {
         if(input === "") {
             return [];
         }
-
-        const suggestions = countryOptions.filter(country => {
-            return country.toLowerCase().includes(input.toLowerCase());
-        });
-        return suggestions;
+        return countryOptions.filter(country => country.toLowerCase().includes(input.toLowerCase()));
     }
 
     return (
@@ -38,4 +35,4 @@ const AutoComplete = React.forwardRef((props, ref) => { {
     )
 }});
 
-export default AutoComplete
+export default React.memo(AutoComplete);

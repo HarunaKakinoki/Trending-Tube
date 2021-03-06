@@ -2,6 +2,7 @@ import React from 'react';
 import Video from '../components/Video/Video';
 
 function VideoContainer({ videos }) {
+    console.log("VIDEOS render")
     return (
         <div>
             {videos && videos.map(video => {

@@ -6,15 +6,13 @@ function AllVideosContainer() {
     let videos;
     const history = useHistory();
     const location = useLocation();
+
+    //Restrict accessing /all page before loading video data.
     if(history.location.state === undefined) {
         history.push("/");
     } else {
         videos = location.state.videos;
     }
-       
-    
-   
-    
 
     return (
         <div>

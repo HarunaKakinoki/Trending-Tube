@@ -21,6 +21,7 @@ class MainConatainer extends Component {
             videos: [],
             userInput: "",
             error: false,
+            errorMessage: "",
             isLoading: true,
             label: ""
         }
@@ -31,6 +32,10 @@ class MainConatainer extends Component {
 
     componentDidMount() {
         this.setInitialData();
+    }
+
+    componentWillUnmount() {
+        console.log("will unmount")
     }
 
     setInitialData = async () => {
@@ -61,7 +66,7 @@ class MainConatainer extends Component {
 
     fetchInitialYoutubeVideos = () => {
         if (doesDataExistInSessionStorage(VIDEOS_KEY)) {
-            const videos = JSON.parse(sessionStorage.getItem('videos'));
+            const videos = JSON.parse(sessionStorage.getItem(VIDEOS_KEY));
             this.setState({ videos: videos, isLoading: false, error: false});
         } else {
             //Fetch Proper Videos based on user's location.
@@ -76,29 +81,36 @@ class MainConatainer extends Component {
 
     handleFormSubmission = (e) => {
         e.preventDefault();
-
-        this.setState({ userInput: this.inputRef.current.value, isLoading: true }, () => {
-            const userInput = this.state.userInput;
-            const selectedCountry = this.state.countryBasicData.find(country => country.Country.toLowerCase() === userInput.toLowerCase());
-
-            if (selectedCountry === undefined) {
-                this.setState({ isLoading: false, error: true });
-            } else {
-                //Fetch videos based on user input.
-                YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${selectedCountry.ISO}&hl=${this.state.language}&maxResults=200`).then(res => {
-                    const userLocationFullName = this.state.countryBasicData.find(country => country.ISO === selectedCountry.ISO).Country;
-                    this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most Popular videos in ${userLocationFullName}` });
-                    if (typeof sessionStorage) {
-                        sessionStorage.setItem(VIDEOS_KEY, JSON.stringify(res.data.items));
-                    }
-                }).catch(err => this.setState({ isLoading: false, error: true }));
-            }
-
-        });
+        const input = this.inputRef.current.value;
+       
+        if(input === "") {
+            console.log("yes")
+            this.setState({ error: true, errorMessage: "Please enter correct country name."});
+        } else {
+            this.setState({ userInput: this.inputRef.current.value, isLoading: true }, () => {
+                const userInput = this.state.userInput;
+                const selectedCountry = this.state.countryBasicData.find(country => country.Country.toLowerCase() === userInput.toLowerCase());
+    
+                if (selectedCountry === undefined) {
+                    this.setState({ isLoading: false, error: true });
+                } else {
+                    //Fetch videos based on user input.
+                    YoutubeApi.get(`${BASE_URL_TO_FETCH_VIDEOS}?order=viewCount&chart=mostPopular&regionCode=${selectedCountry.ISO}&hl=${this.state.language}&maxResults=200`).then(res => {
+                        const userLocationFullName = this.state.countryBasicData.find(country => country.ISO === selectedCountry.ISO).Country;
+                        this.setState({ videos: res.data.items, isLoading: false, error: false, label: `Most Popular videos in ${userLocationFullName}` });
+                        if (typeof sessionStorage) {
+                            sessionStorage.setItem(VIDEOS_KEY, JSON.stringify(res.data.items));
+                        }
+                    }).catch(err => this.setState({ isLoading: false, error: true }));
+                }
+    
+            });
+        }
     }
 
     render() {
-        const { isLoading, error, videos, label } = this.state;
+        console.log("Main render")
+        const { isLoading, error, errorMessage, videos, label } = this.state;
         const videosToDispaly = videos.slice(0, 5); //Dispaly only 5 videos on index page.
 
         return (
@@ -114,7 +126,7 @@ class MainConatainer extends Component {
                         width={50}
                     /> :
                     error ?
-                        <p>Error</p> :
+                        <p>{errorMessage}</p> :
                         <React.Fragment>
                             <VideoContainer videos={videosToDispaly} />
                             <Link to={{

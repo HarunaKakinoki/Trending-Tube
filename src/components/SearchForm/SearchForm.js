@@ -2,7 +2,7 @@ import React from 'react';
 import AutoComplete from '../AutoComplete/AutoComplete';
 
 const SearchForm = React.forwardRef((props, ref) => {
-
+    console.log("Search form render")
     return (
         <React.Fragment>
             <form>
@@ -13,4 +13,4 @@ const SearchForm = React.forwardRef((props, ref) => {
     )
 });
 
-export default SearchForm
+export default React.memo(SearchForm);
