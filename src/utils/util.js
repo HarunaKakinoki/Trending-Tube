@@ -1,7 +1,7 @@
-const doesDataExistInLocalStorage = key => {
+const doesDataExistInSessionStorage = key => {
   if (typeof(Storage) !== "undefined") {
-    return localStorage.getItem(key) !== null;
+    return sessionStorage.getItem(key) !== null;
   }
 }
 
-export { doesDataExistInLocalStorage };
+export { doesDataExistInSessionStorage };

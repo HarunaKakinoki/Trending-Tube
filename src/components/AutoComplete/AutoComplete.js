@@ -30,7 +30,7 @@ const AutoComplete = React.forwardRef((props, ref) => { {
 
     return (
         <div>
-            <input type="search" ref={ref} onChange={handleInputChange} value={userInput}/>
+            <input type="search" ref={ref} onChange={handleInputChange} value={userInput} required/>
             {suggestions.map(suggest => {
                 return <div key={suggest} onClick={(e) => handleSuggestionClick(e)}>{suggest}</div>
             })}
