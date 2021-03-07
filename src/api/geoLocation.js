@@ -1,7 +1,7 @@
 import { iso1A2Code } from '@ideditor/country-coder';
-import { DEFAULT_USER_LOCATION } from '../constants';
+import { DEFAULT_USER_LOCATION } from '../data/constants';
 
-//Get Coordinate of user location.
+//Get Coordinates of user location
 const getUserCoordinates = () => {
   return new Promise((resolve) => {
 
@@ -19,7 +19,7 @@ const getUserCoordinates = () => {
 }
 
 //Get user's location from Geolocation API.
-const getUserLocation = async () => {
+export const getUserLocation = async () => {
   let countryCode = DEFAULT_USER_LOCATION; //Deafult location => Canada.
 
   const coordinates = await getUserCoordinates();
@@ -32,5 +32,3 @@ const getUserLocation = async () => {
 
   return countryCode;
 }
-
-export { getUserLocation };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../../utils/constants';
+import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../../data/constants';
 
 function Video({data, videoId}) {
     const url = `${BASE_URL_TO_YOUTUBE_VIDEOS}${videoId}`

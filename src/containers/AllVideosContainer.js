@@ -1,6 +1,6 @@
 import React from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
-import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../utils/constants';
+import { APP_TITLE, BASE_URL_TO_YOUTUBE_VIDEOS } from '../data/constants';
 
 function AllVideosContainer() {
     let videos;
@@ -16,7 +16,7 @@ function AllVideosContainer() {
 
     return (
         <div>
-            <Link to="/">Most-Viewed</Link>
+            <Link to="/">{APP_TITLE}</Link>
             { videos &&
                 <table>
                     <tbody>

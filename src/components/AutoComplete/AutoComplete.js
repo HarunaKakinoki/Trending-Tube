@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { countryData } from '../../data/data';
 
 const AutoComplete = React.forwardRef((props, ref) => { {
-    console.log("AUTOCOMPLNET RENDEr")
     const countryOptions = countryData.map(country => country.Country);
     const [userInput, setUserInput] = useState("");
     const [suggestions, setSuggestions] = useState([]);
