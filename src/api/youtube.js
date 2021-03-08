@@ -9,8 +9,5 @@ export default axios.create({
 
 export const baseParams = {
     part: "snippet",
-    maxResults: 50,
-    order: "viewCount",
-    chart: "mostPopular",
     key: API_KEY
-  };
+};

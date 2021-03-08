@@ -13,6 +13,7 @@
     text-overflow: ellipsis;
 }
 
+/*** Styling for AutoComplete Component ***/
 .autocomplete {
     position: relative;
   display: inline-block;
@@ -42,3 +43,28 @@
     background-color: #fff; 
     border-bottom: 1px solid #d4d4d4; 
 }
+
+.videosTable {
+    text-align: left;
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    position: relative;
+}
+
+thead {
+    background-color: white;
+    height: 100px;
+}
+
+.videosTable th {
+    height: 50px;
+    background-color:white;
+  position: sticky;
+  top: 0px; /* Don't forget this, required for the stickiness */
+  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+}
+
