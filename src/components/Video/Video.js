@@ -4,7 +4,7 @@ import { BASE_URL_TO_YOUTUBE_VIDEOS } from '../../data/constants';
 
 function Video({data, videoId, category, index}) {
     const url = `${BASE_URL_TO_YOUTUBE_VIDEOS}${videoId}`
-    console.log(data)
+    
     return (
         <div className={styles.test}>
             <iframe src={url} title={data.title}></iframe>

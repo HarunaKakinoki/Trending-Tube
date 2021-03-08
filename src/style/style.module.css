@@ -68,3 +68,21 @@ thead {
   box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
 }
 
+/*** ScrollToTop Component ***/
+.scrollToTop {
+    position: fixed;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    animation: fadeIn 700ms ease-in-out 1s both;
+    cursor: pointer;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+

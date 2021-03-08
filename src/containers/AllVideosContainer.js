@@ -1,6 +1,7 @@
 import React from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import ReactCountryFlag from 'react-country-flag';
+import ScrollToTop from '../components/ScrollToTop';
 import { APP_TITLE, BASE_URL_TO_YOUTUBE_VIDEOS } from '../data/constants';
 import styles from '../style/style.module.css';
 
@@ -26,7 +27,6 @@ function AllVideosContainer() {
             </div>
             { videos &&
                 <table className={styles.videosTable}>
-
                     {/* Headers */}
                     <thead>
                         <tr>
@@ -66,8 +66,7 @@ function AllVideosContainer() {
                     </tbody>
                 </table>
             }
-            {/* Button to go back to top */}
-            <button onclick="topFunction()">Go</button>
+            <ScrollToTop />
         </div>
     )
 }
