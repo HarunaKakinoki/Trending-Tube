@@ -1,4 +1,44 @@
+.test {
+    width: 25%;
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    border: 1px solid black;
+}
 
-a:link {
-    text-decoration: none;
+.test p {
+    font-size: 0.5em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.autocomplete {
+    position: relative;
+  display: inline-block;
+}
+
+.autocompleteList {
+    position: absolute;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    /*position the autocomplete items to be the same width as the container:*/
+    top: 100%;
+    left: 0;
+    right: 0;
+
+    /*To avoid displaying too long list (Instead, list is scrollable)*/
+    max-height: 200px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+}
+
+.suggestions {
+    padding: 3px;
+    cursor: pointer;
+    background-color: #fff; 
+    border-bottom: 1px solid #d4d4d4; 
 }

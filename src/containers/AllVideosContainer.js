@@ -8,7 +8,7 @@ function AllVideosContainer() {
     const location = useLocation();
 
     //Restrict accessing /all page before loading video data.
-    if(history.location.state === undefined) {
+    if (history.location.state === undefined) {
         history.push("/");
     } else {
         videos = location.state.videos;
@@ -17,17 +17,20 @@ function AllVideosContainer() {
     return (
         <div>
             <Link to="/">{APP_TITLE}</Link>
+            <h2>TOP 50 Trending Videos in Korea</h2>
             { videos &&
                 <table>
-                    <tbody>
-                        {/* Headers */}
-                        <tr>
-                            <th>Ranking</th>
-                            <th>Title</th>
-                            <th>Thumbnail</th>
-                            <th>Description</th>
-                        </tr>
 
+                    {/* Headers */}
+                    <thead>
+                    <tr>
+                        <th>Ranking</th>
+                        <th>Title</th>
+                        <th>Thumbnail</th>
+                        <th>Description</th>
+                    </tr>
+                    </thead>
+                    <tbody>
                         {/* Records */}
                         {
                             videos.map((data, index) => {

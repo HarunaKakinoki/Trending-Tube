@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
+import ReactCountryFlag from 'react-country-flag';
+
 import YoutubeApi, { baseParams } from '../api/youtube';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
@@ -14,7 +16,7 @@ class MainConatainer extends Component {
         super(props);
 
         this.state = {
-            location: "",
+            location: "", //Initally user's location.
             locationFullName: "",
             language: "",
             countryData: countryData,
@@ -61,10 +63,11 @@ class MainConatainer extends Component {
                     videos: res.data.items,
                     isLoading: false,
                     error: false,
+                    location: countryCode,
                     label: GENERAL_LABEL + locationFullName
                 });
 
-                saveDataToSessionStorage(VIDEOS_KEY, { videos: res.data.items, locationFullName });
+                saveDataToSessionStorage(VIDEOS_KEY, { videos: res.data.items, countryCode, locationFullName });
             })
             .catch(err => this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA }));
     }
@@ -72,15 +75,17 @@ class MainConatainer extends Component {
     setInitialVideoData = () => {
         //When already feteched data exists on session storage, set them as state.
         if (doesDataExistInSessionStorage(VIDEOS_KEY)) {
-            const { videos, locationFullName } = JSON.parse(sessionStorage.getItem(VIDEOS_KEY));
-            this.setState({ 
-                videos: videos,  
-                label: GENERAL_LABEL + locationFullName, 
-                isLoading: false, 
-                error: false 
+            const { videos, countryCode, locationFullName } = JSON.parse(sessionStorage.getItem(VIDEOS_KEY));
+            this.setState({
+                videos: videos,
+                label: GENERAL_LABEL + locationFullName,
+                location: countryCode,
+                locationFullName,
+                isLoading: false,
+                error: false
             });
 
-        //Fetch video data by making api call.
+            //Fetch video data by making api call.
         } else {
             this.fetchVideosBasedOnCountry(this.state.location);
         }
@@ -118,7 +123,7 @@ class MainConatainer extends Component {
 
         return (
             <div>
-                <Link to="/">{APP_TITLE}</Link>
+                <h1><Link to="/">{APP_TITLE}</Link></h1>
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
                 {isLoading ?
                     <Loader
@@ -131,6 +136,15 @@ class MainConatainer extends Component {
                         <p>{errorMessage}</p> :
                         <React.Fragment>
                             {label}
+                            <ReactCountryFlag
+                                countryCode={this.state.location}
+                                svg
+                                style={{
+                                    width: '2em',
+                                    height: '2em',
+                                }}
+                                title="US"
+                            />
                             <VideoContainer videos={videosToDispaly} />
                             <Link to={{
                                 pathname: '/all',

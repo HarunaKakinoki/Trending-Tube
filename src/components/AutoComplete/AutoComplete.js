@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { countryData } from '../../data/data';
+import styles from '../../style/style.module.css';
 
 const AutoComplete = React.forwardRef((props, ref) => { {
     const countryOptions = countryData.map(country => country.Country);
@@ -25,11 +26,13 @@ const AutoComplete = React.forwardRef((props, ref) => { {
     }
 
     return (
-        <div>
+        <div className={styles.autocomplete}>
             <input type="search" ref={ref} onChange={handleInputChange} value={userInput} required/>
-            {suggestions.map(suggest => {
-                return <div key={suggest} onClick={(e) => handleSuggestionClick(e)}>{suggest}</div>
-            })}
+            <div className={styles.autocompleteList} onClick={(e) => handleSuggestionClick(e)}>
+                {suggestions.map(suggest => {
+                    return <div className={styles.suggestions} key={suggest} >{suggest}</div>
+                })}
+            </div>
         </div>
     )
 }});

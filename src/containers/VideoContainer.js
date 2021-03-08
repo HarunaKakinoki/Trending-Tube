@@ -4,8 +4,8 @@ import Video from '../components/Video/Video';
 function VideoContainer({ videos }) {
     return (
         <div>
-            {videos && videos.map(video => {
-                return <Video key={video.id} videoId={video.id} data={video.snippet}/>;
+            {videos && videos.map((video, index) => {
+                return <Video key={video.id} videoId={video.id} data={video.snippet} index={index+1}/>;
             })}
         </div>
     )

@@ -1,14 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Open+Sans&family=Playfair+Display&family=Roboto&display=swap');
-
 .App {
-  text-align: center;
-  font-family: 'Montserrat', sans-serif;
+  text-align: center;  
 }
-
-a:link {
-  text-decoration: none;
-}
-
 
 @keyframes App-logo-spin {
   from {
