@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Button } from 'react-bootstrap';
 import styles from '../style/style.module.css';
 
 function ScrollToTop() {
@@ -23,11 +24,10 @@ function ScrollToTop() {
         window.addEventListener("scroll", toggleVisibility);
       }, []);
     
-
     return (
         <div className={styles.scrollToTop}>
             {
-                isVisible && <button onClick={scrollToTop}>Top</button>
+                isVisible && <Button variant="warning" onClick={scrollToTop}>Top</Button>
             }
         </div>
     )

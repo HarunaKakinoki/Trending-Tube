@@ -7,9 +7,15 @@ import { countryData } from '../data/data';
 import YoutubeApi, { baseParams } from '../api/youtube';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
+import {
+        APP_TITLE, BASE_URL_TO_FETCH_VIDEOS,
+        BASE_URL_TO_FETCH_CATEGORIES,
+        GENERAL_LABEL,
+        ERROR_MESSAGE_NO_COUNTRY_DATA,
+        ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY
+} from '../data/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
-import { APP_TITLE, BASE_URL_TO_FETCH_VIDEOS, BASE_URL_TO_FETCH_CATEGORIES, GENERAL_LABEL, ERROR_MESSAGE_NO_COUNTRY_DATA, ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY } from '../data/constants';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -75,7 +81,7 @@ class MainConatainer extends Component {
             const locationFullName = this.state.countryData.find(country => country.ISO === countryCode).Country || countryCode;
             const videoData = videoResponse.map(video => {
                 const categoryId = categoryRequest.find(category => category.id === video.snippet.categoryId).snippet.title;
-                return {...video, categoryName: categoryId};
+                return { ...video, categoryName: categoryId };
             });
 
             this.setState({
@@ -95,7 +101,7 @@ class MainConatainer extends Component {
 
     getVideoCategoryById = (videos) => {
 
-    } 
+    }
 
     setInitialVideoData = () => {
         //When already feteched data exists on session storage, set them as state.
@@ -145,7 +151,7 @@ class MainConatainer extends Component {
     render() {
         const { isLoading, error, errorMessage, videos, label, location, locationFullName } = this.state;
         const videosToDispaly = videos.slice(0, 5); //Dispaly only 5 videos on index page.
-        console.log(videos)
+
         return (
             <div>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
@@ -160,17 +166,17 @@ class MainConatainer extends Component {
                     error ?
                         <p>{errorMessage}</p> :
                         <React.Fragment>
-                            <h2>{label}
-                            <ReactCountryFlag
-                                countryCode={location}
-                                svg
-                                style={{
-                                    width: '2em',
-                                    height: '2em',
-                                    margin: '0.5em'
-                                }}
-                                title={locationFullName}
-                            /></h2>
+                            {label}
+                                <ReactCountryFlag
+                                    countryCode={location}
+                                    svg
+                                    style={{
+                                        width: '2em',
+                                        height: '2em',
+                                        margin: '0.5em'
+                                    }}
+                                    title={locationFullName}
+                                />
                             <VideoContainer videos={videosToDispaly} />
                             <Link to={{
                                 pathname: '/all',

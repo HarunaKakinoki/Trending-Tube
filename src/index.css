@@ -1,17 +1,35 @@
+@import url("bootstrap/dist/css/bootstrap.css");
+@import url('https://fonts.googleapis.com/css2?family=Red+Hat+Display&display=swap');
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif; */
+  font-family: 'Red Hat Display', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fdc921;
-  color: grey;
+  background-color: #bde0fe;
+  color: #4a4e69;
 }
 
-a { color: #fdf8e1;}
+h1 {
+  margin: 1em;
+  font-size: 1.8em;
+  font-family: "Spartan", sans-serif;
+}
+
+a {
+  color: #023e8a;
+  transition: color 0.2s;
+}
 
 a:link {
   text-decoration: none;
+}
+
+a:hover {
+  color: #fdf8e1;
 }
 
 code {

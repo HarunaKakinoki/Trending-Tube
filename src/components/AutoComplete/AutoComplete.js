@@ -27,7 +27,7 @@ const AutoComplete = React.forwardRef((props, ref) => { {
 
     return (
         <div className={styles.autocomplete}>
-            <input type="search" ref={ref} onChange={handleInputChange} value={userInput} placeholder="Type country name..."/>
+            <input type="text" ref={ref} onChange={handleInputChange} value={userInput} placeholder="Type country name..."/>
             <div className={styles.autocompleteList} onClick={(e) => handleSuggestionClick(e)}>
                 {suggestions.map(suggest => {
                     return <div className={styles.suggestions} key={suggest} >{suggest}</div>
