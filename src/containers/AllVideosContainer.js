@@ -26,15 +26,15 @@ function AllVideosContainer() {
             <div className={styles.allVideosHeader}>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
                 <p>TOP 50 Trending Videos in {countryFullName}
-                <ReactCountryFlag
-                    countryCode={countryCode}
-                    svg
-                    style={countryFlagStyle}
-                    title={countryFullName}
-                /></p>
+                    <ReactCountryFlag
+                        countryCode={countryCode}
+                        svg
+                        style={countryFlagStyle}
+                        title={countryFullName} />
+                </p>
             </div>
             { videos &&
-                <Table variant="primary" striped>
+                <Table variant="primary" responsive striped>
                     {/* Headers */}
                     <thead>
                         <tr>

@@ -1,15 +1,25 @@
 /*** Styling for Main Container ***/
 .mainContainer p {
+    width: 100%;
+    display: block;
     margin: 0.3em;
 }
 
-.linkToAllVideos {
+.linkToAllVideos { /*Link at the bottom of the index page*/
     font-size: 1em;
+    padding: 0.3em;
+    background-color: #fcc271;
+    color: white;
+    border-radius: 5px;
     position: fixed;
-    bottom: 2.5rem;
-    right: 1.5rem;
+    bottom: 0.5rem;
+    right: 0.5rem;
     animation: fadeIn 500ms ease-in-out 0.7s both;
     cursor: pointer;
+}
+
+.linkToAllVideos:hover {
+    color: #4a4e69;
 }
 
 /*** Styling for SearchForm Component ***/
@@ -58,6 +68,11 @@
     width: 100%;
     display: block;
     position: relative;
+}
+
+.allVideosHeader {
+    width: 100%;
+    display: block;
 }
 
 .allVideos table { /*<Table />*/
@@ -110,21 +125,21 @@
 
 /*** Styling for Video Component ***/
 .video {
-    width: 30%;
+    width: 100%;
     display: inline-block;
-    margin: 0.3em 0.8em;
+    margin: 0.3em auto;
     padding: 0.5em;
     border-radius: 10px;
     background-color: #fdf8e1;
 }
 
 .video iframe {
-    width: 95%;
+    width: 90%;
 }
 
 .video p {
     font-size: 0.8em;
-    margin: 0em;
+    margin: 0.3em;
 
     /*To hide too long text*/
     white-space: nowrap;

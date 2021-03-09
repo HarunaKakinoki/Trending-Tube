@@ -8,11 +8,11 @@ import YoutubeApi, { baseParams } from '../api/youtube';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
 import {
-        APP_TITLE, BASE_URL_TO_FETCH_VIDEOS,
-        BASE_URL_TO_FETCH_CATEGORIES,
-        GENERAL_LABEL,
-        ERROR_MESSAGE_NO_COUNTRY_DATA,
-        ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY
+    APP_TITLE, BASE_URL_TO_FETCH_VIDEOS,
+    BASE_URL_TO_FETCH_CATEGORIES,
+    GENERAL_LABEL,
+    ERROR_MESSAGE_NO_COUNTRY_DATA,
+    ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY
 } from '../data/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
@@ -151,39 +151,46 @@ class MainConatainer extends Component {
 
     render() {
         const { isLoading, error, errorMessage, videos, label, location, locationFullName } = this.state;
-        const videosToDispaly = videos.slice(0, 5); //Dispaly only 5 videos on index page.
+        const videosToDispaly = videos.slice(0, 6); //Dispaly only 6 videos on index page.
 
         return (
             <div className={styles.mainContainer}>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
-                {isLoading ?
-                    <Loader
-                        type="ThreeDots"
-                        color="#00BFFF"
-                        height={50}
-                        width={50}
-                    /> :
-                    error ?
-                        <p>{errorMessage}</p> :
-                        <React.Fragment>
-                            <p>{label}
-                                <ReactCountryFlag
-                                    countryCode={location}
-                                    svg
-                                    style={{
-                                        width: '2em',
-                                        height: '2em',
-                                        margin: '0.3em'
-                                    }}
-                                    title={locationFullName}
-                                /></p>
-                            <VideoContainer videos={videosToDispaly} />
-                            <div className={styles.linkToAllVideos}><Link to={{
-                                pathname: '/all',
-                                state: { videos, location, locationFullName }
-                            }}>See all popular videos...</Link></div>
-                        </React.Fragment>
+                {
+
+                    //When loading.
+                    isLoading ?
+                        <Loader
+                            type="ThreeDots"
+                            color="#00BFFF"
+                            height={50}
+                            width={50} /> :
+
+                        //When error happens.
+                        error ?
+                            <p>{errorMessage}</p> :
+
+                            //When successfully load data.
+                            <React.Fragment>
+                                <p>{label}
+                                    <ReactCountryFlag
+                                        countryCode={location}
+                                        svg
+                                        style={{
+                                            width: '2em',
+                                            height: '2em',
+                                            margin: '0.3em'
+                                        }}
+                                        title={locationFullName}
+                                    /></p>
+                                <VideoContainer videos={videosToDispaly} />
+                                
+                                {/* Link to /all route*/}
+                                <Link to={{ pathname: '/all', state: { videos, location, locationFullName } }}>
+                                    <span className={styles.linkToAllVideos}>See all popular videos...</span>
+                                </Link>
+                            </React.Fragment>
                 }
             </div>
 
