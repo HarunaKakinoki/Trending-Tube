@@ -16,6 +16,7 @@ import {
 } from '../data/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
+import styles from '../style/style.module.css';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -153,7 +154,7 @@ class MainConatainer extends Component {
         const videosToDispaly = videos.slice(0, 5); //Dispaly only 5 videos on index page.
 
         return (
-            <div>
+            <div className={styles.mainContainer}>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
                 <SearchForm ref={this.inputRef} clickHandler={this.handleFormSubmission} />
                 {isLoading ?
@@ -166,22 +167,22 @@ class MainConatainer extends Component {
                     error ?
                         <p>{errorMessage}</p> :
                         <React.Fragment>
-                            {label}
+                            <p>{label}
                                 <ReactCountryFlag
                                     countryCode={location}
                                     svg
                                     style={{
                                         width: '2em',
                                         height: '2em',
-                                        margin: '0.5em'
+                                        margin: '0.3em'
                                     }}
                                     title={locationFullName}
-                                />
+                                /></p>
                             <VideoContainer videos={videosToDispaly} />
-                            <Link to={{
+                            <div className={styles.linkToAllVideos}><Link to={{
                                 pathname: '/all',
                                 state: { videos, location, locationFullName }
-                            }}> See all popular videos...</Link>
+                            }}>See all popular videos...</Link></div>
                         </React.Fragment>
                 }
             </div>

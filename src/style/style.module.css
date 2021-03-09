@@ -1,29 +1,20 @@
-/*** Styling for Video Component ***/
-.video {
-    width: 30%;
-    display: inline-block;
-    margin: 0.3em 0.8em;
-    padding: 0.5em;
-    border-radius: 10px;
-    background-color: #fdf8e1;
+/*** Styling for Main Container ***/
+.mainContainer p {
+    margin: 0.3em;
 }
 
-.video iframe {
-    width: 95%;
-}
-
-.video p {
-    font-size: 0.8em;
-    margin: 0em;
-
-    /*To hide too long text*/
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+.linkToAllVideos {
+    font-size: 1em;
+    position: fixed;
+    bottom: 2.5rem;
+    right: 1.5rem;
+    animation: fadeIn 500ms ease-in-out 0.7s both;
+    cursor: pointer;
 }
 
 /*** Styling for SearchForm Component ***/
 .searchForm {
+    /*To make input element and button vertical*/
     display: flex;
     align-items: center;
     justify-content: center;
@@ -63,52 +54,89 @@
 
 /*** Styling for AllVideosContainer ***/
 
-.videosTable {
+.allVideos {
+    width: 100%;
+    display: block;
+    position: relative;
+}
+
+.allVideos table { /*<Table />*/
     width: 100%;
     color:#4a4e69;
     text-align: center;
     margin: 25px 0;
     font-size: 0.9em;
-    position: relative;
-    overflow-x: auto;
+    overflow-y: auto;
 }
 
-.videosTable th {
+.allVideos tbody {
+    color:#4a4e69;
+    overflow-y: auto;
+}
+
+.allVideos thead th {
+    background-color: rgba(255, 255, 255, 0.8);
     height: 50px;
-    font-weight: bold;
     position: sticky;
     top: -1px; /* Don't forget this, required for the stickiness */
+    vertical-align: middle;
 }
 
-.videosTable tr {
+.allVideos tr {
     height: 50px;
-    overflow: hidden;
     background-color: white;
     color:#4a4e69;
 }
 
+.allVideos td {
+    vertical-align: middle;
+}
 /* Rank*/
-.videosTable .rank {
-    font-weight: bold;
+.allVideos .rank {
+    font-size: 1.5em;
 }
 
-/*Title*/
-.videosTable .title {
+.allVideos .title {
+    width: 45%;
     text-align: left;
+    text-overflow: ellipsis;
 }
 
-.videosTable .description {
+/* .videosTable .description {
     text-align: left;
     padding: 1em;
+    text-overflow: ellipsis;
+} */
+
+/*** Styling for Video Component ***/
+.video {
+    width: 30%;
+    display: inline-block;
+    margin: 0.3em 0.8em;
+    padding: 0.5em;
+    border-radius: 10px;
+    background-color: #fdf8e1;
+}
+
+.video iframe {
+    width: 95%;
+}
+
+.video p {
+    font-size: 0.8em;
+    margin: 0em;
+
+    /*To hide too long text*/
+    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-/*** ScrollToTop Component ***/
+/*** Styling for ScrollToTop Component ***/
 .scrollToTop {
     position: fixed;
-    bottom: 0.5rem;
-    right: 0.5rem;
+    bottom: 1rem;
+    right: 1rem;
     animation: fadeIn 700ms ease-in-out 1s both;
     cursor: pointer;
 }

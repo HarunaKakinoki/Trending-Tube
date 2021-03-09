@@ -10,6 +10,7 @@ function AllVideosContainer() {
     let videos, countryCode, countryFullName;
     const history = useHistory();
     const location = useLocation();
+    const countryFlagStyle = { width: '2em', height: '2em', margin: '0.3em' };
 
     //Restrict accessing /all page before loading video data.
     if (history.location.state === undefined) {
@@ -24,36 +25,30 @@ function AllVideosContainer() {
         <div className={styles.allVideos}>
             <div className={styles.allVideosHeader}>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
-                TOP 50 Trending Videos in {countryFullName}
-                    <ReactCountryFlag
-                        countryCode={countryCode}
-                        svg
-                        style={{
-                            width: '2em',
-                            height: '2em',
-                        }}
-                        title={countryFullName}
-                    />
+                <p>TOP 50 Trending Videos in {countryFullName}
+                <ReactCountryFlag
+                    countryCode={countryCode}
+                    svg
+                    style={countryFlagStyle}
+                    title={countryFullName}
+                /></p>
             </div>
             { videos &&
-                <Table className={styles.videosTable} variant="primary" responsive striped>
+                <Table variant="primary" striped>
                     {/* Headers */}
                     <thead>
                         <tr>
                             <th><ReactCountryFlag
                                 countryCode={countryCode}
                                 svg
-                                style={{
-                                    width: '2em',
-                                    height: '2em',
-                                }}
+                                style={countryFlagStyle}
                                 title={countryFullName}
                             /></th>
-                            <th>Title</th>
                             <th>Thumbnail</th>
+                            <th>Title</th>
                             <th>Channel Title</th>
                             <th>Category</th>
-                            <th>Description</th>
+                            {/* <th>Description</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -62,17 +57,17 @@ function AllVideosContainer() {
                             videos.map((data, index) => {
                                 const { id, categoryName } = data;
                                 const video = data.snippet;
-                                const originalDescription = data.snippet.localized.description;
-                                const description = originalDescription.length >= DESCRIPTION_LENGTH ? originalDescription.substr(0, DESCRIPTION_LENGTH) + "..." : originalDescription;
+                                // const originalDescription = data.snippet.localized.description;
+                                // const description = originalDescription.length >= DESCRIPTION_LENGTH ? originalDescription.substr(0, DESCRIPTION_LENGTH) + "..." : originalDescription;
 
                                 return (
                                     <tr key={index}>
                                         <td className={styles.rank}>{index + 1}</td>
-                                        <td className={styles.title}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer">{video.localized.title}</a></td>
                                         <td className={styles.thumnail}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer"><img src={video.thumbnails.default.url} alt="thumnail-image" /></a></td>
+                                        <td className={styles.title}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer">{video.localized.title}</a></td>
                                         <td>{video.channelTitle}</td>
                                         <td className={styles.category}>{categoryName}</td>
-                                        <td className={styles.description}>{description}</td> {/* "localized" property holds localized data if exists */}
+                                        {/* <td className={styles.description}>{description}</td>  */}
                                     </tr>
                                 );
                             })
