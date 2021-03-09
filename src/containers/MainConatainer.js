@@ -3,14 +3,13 @@ import { Link } from "react-router-dom";
 import Loader from "react-loader-spinner";
 import ReactCountryFlag from 'react-country-flag';
 import axios from 'axios';
+import { countryData } from '../data/data';
 import YoutubeApi, { baseParams } from '../api/youtube';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
-import { countryData } from '../data/data';
-import { APP_TITLE, BASE_URL_TO_FETCH_VIDEOS, GENERAL_LABEL, ERROR_MESSAGE_NO_COUNTRY_DATA, ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY } from '../data/constants';
-import Video from '../components/Video/Video';
+import { APP_TITLE, BASE_URL_TO_FETCH_VIDEOS, BASE_URL_TO_FETCH_CATEGORIES, GENERAL_LABEL, ERROR_MESSAGE_NO_COUNTRY_DATA, ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY } from '../data/constants';
 
 class MainConatainer extends Component {
     constructor(props) {
@@ -51,30 +50,6 @@ class MainConatainer extends Component {
 
     //Fetch vidoe data thorugh youtube data api & set response as state & session storage.
     fetchVideosBasedOnCountry = (countryCode) => {
-        // YoutubeApi.get(BASE_URL_TO_FETCH_VIDEOS, {
-        //     params: {
-        //         ...baseParams,
-        // maxResults: 50,
-        // order: "viewCount",
-        // crt: "mostPopular",
-        //         regionCode: countryCode,
-        //         hl: this.state.language
-        //     }
-        // })
-        //     .then(res => {
-        //         let locationFullName = this.state.countryData.find(country => country.ISO === countryCode).Country || countryCode;
-        //         this.setState({
-        //             videos: res.data.items,
-        //             isLoading: false,
-        //             error: false,
-        //             location: countryCode,
-        //             label: GENERAL_LABEL + locationFullName
-        //         });
-
-        //         saveDataToSessionStorage(VIDEOS_KEY, { videos: res.data.items, countryCode, locationFullName });
-        //     })
-        //     .catch(err => this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA }));
-
         const videoRequest = YoutubeApi.get(BASE_URL_TO_FETCH_VIDEOS, {
             params: {
                 ...baseParams,
@@ -86,7 +61,7 @@ class MainConatainer extends Component {
             }
         });
 
-        const categoryRequest = YoutubeApi.get("videoCategories", {
+        const categoryRequest = YoutubeApi.get(BASE_URL_TO_FETCH_CATEGORIES, {
             params: {
                 ...baseParams,
                 regionCode: countryCode,
@@ -101,9 +76,8 @@ class MainConatainer extends Component {
             const videoData = videoResponse.map(video => {
                 const categoryId = categoryRequest.find(category => category.id === video.snippet.categoryId).snippet.title;
                 return {...video, categoryName: categoryId};
-            })
+            });
 
-           
             this.setState({
                 videos: videoData,
                 isLoading: false,
@@ -114,8 +88,6 @@ class MainConatainer extends Component {
             });
 
             saveDataToSessionStorage(VIDEOS_KEY, { videos: videoData, countryCode, locationFullName });
-
-            console.log(videoResponse, categoryRequest)
         })).catch(errors => {
             this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
         });
@@ -173,7 +145,7 @@ class MainConatainer extends Component {
     render() {
         const { isLoading, error, errorMessage, videos, label, location, locationFullName } = this.state;
         const videosToDispaly = videos.slice(0, 5); //Dispaly only 5 videos on index page.
-
+        console.log(videos)
         return (
             <div>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
@@ -188,16 +160,17 @@ class MainConatainer extends Component {
                     error ?
                         <p>{errorMessage}</p> :
                         <React.Fragment>
-                            {label}
+                            <h2>{label}
                             <ReactCountryFlag
                                 countryCode={location}
                                 svg
                                 style={{
                                     width: '2em',
                                     height: '2em',
+                                    margin: '0.5em'
                                 }}
                                 title={locationFullName}
-                            />
+                            /></h2>
                             <VideoContainer videos={videosToDispaly} />
                             <Link to={{
                                 pathname: '/all',

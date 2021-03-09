@@ -1,8 +1,8 @@
 import React from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import ReactCountryFlag from 'react-country-flag';
-import ScrollToTop from '../components/ScrollToTop';
 import { APP_TITLE, BASE_URL_TO_YOUTUBE_VIDEOS } from '../data/constants';
+import ScrollToTop from '../components/ScrollToTop';
 import styles from '../style/style.module.css';
 
 function AllVideosContainer() {
@@ -42,6 +42,7 @@ function AllVideosContainer() {
                             <th>Title</th>
                             <th>Category</th>
                             <th>Thumbnail</th>
+                            <th>Channel Title</th>
                             <th>Description</th>
                         </tr>
                     </thead>
@@ -54,11 +55,12 @@ function AllVideosContainer() {
 
                                 return (
                                     <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td ><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer">{video.title}</a></td>
-                                        <td>{categoryName}</td>
-                                        <td><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer"><img src={video.thumbnails.default.url} alt="thumnail-image" /></a></td>
-                                        <td>{video.description}</td>
+                                        <td className={styles.index}>{index + 1}</td>
+                                        <td className={styles.title}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer">{video.localized.title}</a></td>
+                                        <td className={styles.category}>{categoryName}</td>
+                                        <td>{video.channelTitle}</td>
+                                        <td className={styles.thumnail}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer"><img src={video.thumbnails.default.url} alt="thumnail-image" /></a></td>
+                                        <td className={styles.description}>{video.localized.description}</td> {/* "localized" property holds localized data if exists */}
                                     </tr>
                                 );
                             })

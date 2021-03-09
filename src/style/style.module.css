@@ -16,7 +16,7 @@
 /*** Styling for AutoComplete Component ***/
 .autocomplete {
     position: relative;
-  display: inline-block;
+    display: inline-block;
 }
 
 .autocompleteList {
@@ -40,9 +40,11 @@
 .suggestions {
     padding: 3px;
     cursor: pointer;
-    background-color: #fff; 
-    border-bottom: 1px solid #d4d4d4; 
+    background-color: #fff;
+    border-bottom: 1px solid #d4d4d4;
 }
+
+/*** Styling for AllVideosContainer ***/
 
 .videosTable {
     text-align: left;
@@ -53,19 +55,46 @@
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     position: relative;
-}
-
-thead {
-    background-color: white;
-    height: 100px;
+    overflow-x: auto;
 }
 
 .videosTable th {
     height: 50px;
-    background-color:white;
-  position: sticky;
-  top: 0px; /* Don't forget this, required for the stickiness */
-  box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    position: sticky;
+    top: 0px; /* Don't forget this, required for the stickiness */
+    background-color: #fff185;
+    box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
+    text-align: center;
+}
+
+.videosTable tr {
+    background-color: white;
+    height: 50px;
+    overflow: hidden;
+}
+
+td {
+    text-align: center;
+    padding: 0.5em;
+    overflow: hidden;
+}
+a:link {
+    color: black;
+}
+.videosTable .index {
+    font-weight: 1000;
+}
+
+.videosTable .title {
+    width: 30%;
+    text-align: left;
+}
+
+.videosTable .description {
+    text-align: left;
+    padding: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /*** ScrollToTop Component ***/
@@ -75,14 +104,13 @@ thead {
     right: 0.5rem;
     animation: fadeIn 700ms ease-in-out 1s both;
     cursor: pointer;
-  }
-  
-  @keyframes fadeIn {
+}
+
+@keyframes fadeIn {
     from {
-      opacity: 0;
+        opacity: 0;
     }
     to {
-      opacity: 1;
+        opacity: 1;
     }
-  }
-
+}
