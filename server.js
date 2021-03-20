@@ -1,6 +1,6 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
-require('dotenv').config();
 const path = require('path');
 const axios = require('axios');
 const YOUTUBE_API_BASE_URL = "https://www.googleapis.com/youtube/v3";
@@ -12,7 +12,7 @@ const BASE_URL_TO_FETCH_CATEGORIES = "/videoCategories";
 //Serve files under the "build" folder.
 app.use(express.static('build'));
 app.listen(5000, () => {
-  console.log('server is listening on port 3000!')
+  console.log('server is listening on port 5000!');
 });
 
 //axios settings.
@@ -27,8 +27,7 @@ const baseParams = {
 
 
 app.get('/api/*', (req, res, next) => {
-  const regionCode = req.query.regionCode;
-  const hl = req.query.hl;
+  const { regionCode, hl } = req.query;
 
   //Video Request.
   const videoRequest = YoutubeApi.get(BASE_URL_TO_FETCH_VIDEOS, {
@@ -40,7 +39,7 @@ app.get('/api/*', (req, res, next) => {
       order: "viewCount",
       chart: "mostPopular",
     }
-  }, console.log('req body'));
+  });
 
   const categoryRequest = YoutubeApi.get(BASE_URL_TO_FETCH_CATEGORIES, {
     params: {
@@ -51,30 +50,16 @@ app.get('/api/*', (req, res, next) => {
   });
 
   axios.all([videoRequest, categoryRequest]).then(axios.spread((...responses) => {
-    console.log(responses, 'res')
     const videoResponse = responses[0].data.items;
     const categoryRequest = responses[1].data.items;
-    //const locationFullName = this.state.countryData.find(country => country.ISO === countryCode).Country || countryCode;
     const videoData = videoResponse.map(video => {
       const categoryId = categoryRequest.find(category => category.id === video.snippet.categoryId).snippet.title;
       return { ...video, categoryName: categoryId };
     });
 
-    res.send({
-      data: {
-        videos: videoData,
-        // isLoading: false,
-        // error: false,
-        location: regionCode,
-        // label: GENERAL_LABEL + locationFullName,
-        //locationFullName
-      }
-    });
-
-    //saveDataToSessionStorage(VIDEOS_KEY, { videos: videoData, countryCode, locationFullName });
-  })).catch(errors => {
-    //this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
-    console.log(errors)
+    res.send({ videos: videoData });
+  })).catch(err => {
+    res.send(err);
   });
 })
 

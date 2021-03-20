@@ -2,7 +2,7 @@ import React from 'react';
 import { useHistory, useLocation, Link } from 'react-router-dom';
 import { Table } from 'react-bootstrap';
 import ReactCountryFlag from 'react-country-flag';
-import { APP_TITLE, BASE_URL_TO_YOUTUBE_VIDEOS, DESCRIPTION_LENGTH } from '../data/constants';
+import { APP_TITLE, BASE_URL_TO_YOUTUBE_VIDEOS } from '../data/constants';
 import ScrollToTop from '../components/ScrollToTop';
 import styles from '../style/style.module.css';
 
@@ -48,7 +48,6 @@ function AllVideosContainer() {
                             <th>Title</th>
                             <th>Channel Title</th>
                             <th>Category</th>
-                            {/* <th>Description</th> */}
                         </tr>
                     </thead>
                     <tbody>
@@ -57,8 +56,6 @@ function AllVideosContainer() {
                             videos.map((data, index) => {
                                 const { id, categoryName } = data;
                                 const video = data.snippet;
-                                // const originalDescription = data.snippet.localized.description;
-                                // const description = originalDescription.length >= DESCRIPTION_LENGTH ? originalDescription.substr(0, DESCRIPTION_LENGTH) + "..." : originalDescription;
 
                                 return (
                                     <tr key={index}>

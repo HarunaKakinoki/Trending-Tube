@@ -4,16 +4,9 @@ import Loader from "react-loader-spinner";
 import ReactCountryFlag from 'react-country-flag';
 import axios from 'axios';
 import { countryData } from '../data/data';
-//import YoutubeApi, { baseParams } from '../api/youtube';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
-import {
-    APP_TITLE, BASE_URL_TO_FETCH_VIDEOS,
-    BASE_URL_TO_FETCH_CATEGORIES,
-    GENERAL_LABEL,
-    ERROR_MESSAGE_NO_COUNTRY_DATA,
-    ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY
-} from '../data/constants';
+import { APP_TITLE, HEADER_LABEL, ERROR_MESSAGE_NO_COUNTRY_DATA, ERROR_MESSAGE_NO_INPUT, VIDEOS_KEY } from '../data/constants';
 import SearchForm from '../components/SearchForm/SearchForm';
 import VideoContainer from './VideoContainer';
 import styles from '../style/style.module.css';
@@ -23,12 +16,11 @@ class MainConatainer extends Component {
         super(props);
 
         this.state = {
-            location: "", //Initally user's location.
-            locationFullName: "",
+            locationCode: "", //Initally user's locationCode.
+            locationName: "",
             language: "",
             countryData: countryData,
             videos: [],
-            userInput: "",
             error: false,
             errorMessage: "",
             isLoading: true,
@@ -49,77 +41,45 @@ class MainConatainer extends Component {
         const userLocationFullName = this.state.countryData.find(country => country.ISO === userLocation).Country;
 
         this.setState({
-            location: userLocation,
+            locationCode: userLocation,
             language: userLanguage,
-            locationFullName: userLocationFullName
+            locationName: userLocationFullName
         }, () => this.setInitialVideoData());
     }
 
     //Fetch vidoe data thorugh youtube data api & set response as state & session storage.
     fetchVideosBasedOnCountry = () => {
-        const countryCode =this.state.location;
-        axios.get(`/api/initial`, {
+        const { locationCode, locationName, language } = this.state;
+
+        axios.get(`/api/videos`, {
             params: {
-                regionCode: countryCode,
-                hl: this.state.language
+                regionCode: locationCode,
+                hl: language
             }
-        })
-            .then(function (response) {
-                console.log(response)
+
+        }).then((res) => {
+            this.setState({
+                videos: res.data.videos,
+                isLoading: false,
+                error: false,
+                label: HEADER_LABEL + locationName,
             });
-
-        // const videoRequest = YoutubeApi.get(BASE_URL_TO_FETCH_VIDEOS, {
-        //     params: {
-        //         //...baseParams,
-        //         regionCode: countryCode,
-        //         hl: this.state.language,
-        //         maxResults: 50,
-        //         order: "viewCount",
-        //         chart: "mostPopular",
-        //     }
-        // });
-
-        // const categoryRequest = YoutubeApi.get(BASE_URL_TO_FETCH_CATEGORIES, {
-        //     params: {
-        //         ...baseParams,
-        //         regionCode: countryCode,
-        //         hl: this.state.language
-        //     }
-        // });
-
-        // axios.all([videoRequest, categoryRequest]).then(axios.spread((...responses) => {
-        //     const videoResponse = responses[0].data.items;
-        //     const categoryRequest = responses[1].data.items;
-        //     const locationFullName = this.state.countryData.find(country => country.ISO === countryCode).Country || countryCode;
-        //     const videoData = videoResponse.map(video => {
-        //         const categoryId = categoryRequest.find(category => category.id === video.snippet.categoryId).snippet.title;
-        //         return { ...video, categoryName: categoryId };
-        //     });
-
-        //     this.setState({
-        //         videos: videoData,
-        //         isLoading: false,
-        //         error: false,
-        //         location: countryCode,
-        //         label: GENERAL_LABEL + locationFullName,
-        //         locationFullName
-        //     });
-
-        //     saveDataToSessionStorage(VIDEOS_KEY, { videos: videoData, countryCode, locationFullName });
-        // })).catch(errors => {
-        //     this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
-        // });
+            saveDataToSessionStorage(VIDEOS_KEY, { videos: res.data.videos, locationCode: this.state.locationCode, locationName: this.state.locationName });
+        
+        }).catch(err => {
+            this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
+        });
     }
 
     setInitialVideoData = () => {
         //When already feteched data exists on session storage, set them as state.
         if (doesDataExistInSessionStorage(VIDEOS_KEY)) {
-            const { videos, countryCode, locationFullName } = JSON.parse(sessionStorage.getItem(VIDEOS_KEY));
+            const { videos, locationCode, locationName } = JSON.parse(sessionStorage.getItem(VIDEOS_KEY));
             this.setState({
                 videos: videos,
-                label: GENERAL_LABEL + locationFullName,
-                location: countryCode,
-                locationFullName,
+                label: HEADER_LABEL + locationName,
+                locationCode,
+                locationName,
                 isLoading: false,
                 error: false
             });
@@ -141,25 +101,20 @@ class MainConatainer extends Component {
             this.setState({ error: true, errorMessage: ERROR_MESSAGE_NO_INPUT });
 
         } else {
-
-            this.setState({ userInput: this.inputRef.current.value, isLoading: true }, () => {
-                const userInput = this.state.userInput;
-                const selectedCountry = this.state.countryData.find(country => country.Country.toLowerCase() === userInput.toLowerCase());
-
-                if (selectedCountry === undefined) {
-                    this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
-                } else {
-                    this.fetchVideosBasedOnCountry(selectedCountry.ISO);
-                }
-            });
-
+            const selectedCountry = this.state.countryData.find(country => country.Country.toLowerCase() === input.toLowerCase());
+            if (selectedCountry === undefined) {
+                this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
+            } else {
+                const locationName = this.state.countryData.find(country => country.ISO === selectedCountry.ISO).Country || selectedCountry.ISO;
+                this.setState({ isLoading: true, locationCode: selectedCountry.ISO, locationName: locationName }, () => this.fetchVideosBasedOnCountry());
+            }
         }
     }
 
     render() {
-        const { isLoading, error, errorMessage, videos, label, location, locationFullName } = this.state;
-        const videosToDispaly = videos.slice(0, 6); //Dispaly only 6 videos on index page.
-
+        const { isLoading, error, errorMessage, videos, label, locationCode, locationName } = this.state;
+        const videosToDisplay = videos.slice(0, 6); //Display only 6 videos.
+       
         return (
             <div className={styles.mainContainer}>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
@@ -182,19 +137,19 @@ class MainConatainer extends Component {
                             <React.Fragment>
                                 <p>{label}
                                     <ReactCountryFlag
-                                        countryCode={location}
+                                        locationCode={locationCode}
                                         svg
                                         style={{
                                             width: '2em',
                                             height: '2em',
                                             margin: '0.3em'
                                         }}
-                                        title={locationFullName}
+                                        title={locationName}
                                     /></p>
-                                <VideoContainer videos={videosToDispaly} />
+                                <VideoContainer videos={videosToDisplay} />
 
                                 {/* Link to /all route*/}
-                                <Link to={{ pathname: '/all', state: { videos, location, locationFullName } }}>
+                                <Link to={{ pathname: '/all', state: { videos, locationCode, locationName } }}>
                                     <span className={styles.linkToAllVideos}>See all popular videos...</span>
                                 </Link>
                             </React.Fragment>
