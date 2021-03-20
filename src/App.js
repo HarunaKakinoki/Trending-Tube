@@ -10,14 +10,10 @@ function App() {
       <Switch>
 
         {/* Index */}
-        <Route exact path="/" exact>
-          <MainConatainer />
-        </Route>
+        <Route exact path="/" exact component={MainConatainer}/>
 
         {/* All Video Info Page */}
-        <Route exact path="/all" exact>
-          <AllVideosContainer />
-        </Route>
+        <Route exact path="/all" exact component={AllVideosContainer}/>
       
       </Switch>
 

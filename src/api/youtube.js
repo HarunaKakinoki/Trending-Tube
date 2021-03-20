@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { YOUTUBE_API_BASE_URL } from '../data/constants';
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+// const API_KEY = process.env.REACT_APP_API_KEY;
 
-export default axios.create({
-    baseURL: YOUTUBE_API_BASE_URL
-});
+// export default axios.create({
+//     baseURL: YOUTUBE_API_BASE_URL
+// });
 
-export const baseParams = {
-    part: "snippet",
-    key: API_KEY
-};
+// export const baseParams = {
+//     part: "snippet",
+//     key: API_KEY
+// };

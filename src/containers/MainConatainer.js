@@ -4,7 +4,7 @@ import Loader from "react-loader-spinner";
 import ReactCountryFlag from 'react-country-flag';
 import axios from 'axios';
 import { countryData } from '../data/data';
-import YoutubeApi, { baseParams } from '../api/youtube';
+//import YoutubeApi, { baseParams } from '../api/youtube';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
 import {
@@ -56,52 +56,59 @@ class MainConatainer extends Component {
     }
 
     //Fetch vidoe data thorugh youtube data api & set response as state & session storage.
-    fetchVideosBasedOnCountry = (countryCode) => {
-        const videoRequest = YoutubeApi.get(BASE_URL_TO_FETCH_VIDEOS, {
+    fetchVideosBasedOnCountry = () => {
+        const countryCode =this.state.location;
+        axios.get(`/api/initial`, {
             params: {
-                ...baseParams,
-                regionCode: countryCode,
-                hl: this.state.language,
-                maxResults: 50,
-                order: "viewCount",
-                chart: "mostPopular",
-            }
-        });
-
-        const categoryRequest = YoutubeApi.get(BASE_URL_TO_FETCH_CATEGORIES, {
-            params: {
-                ...baseParams,
                 regionCode: countryCode,
                 hl: this.state.language
             }
-        });
-
-        axios.all([videoRequest, categoryRequest]).then(axios.spread((...responses) => {
-            const videoResponse = responses[0].data.items;
-            const categoryRequest = responses[1].data.items;
-            const locationFullName = this.state.countryData.find(country => country.ISO === countryCode).Country || countryCode;
-            const videoData = videoResponse.map(video => {
-                const categoryId = categoryRequest.find(category => category.id === video.snippet.categoryId).snippet.title;
-                return { ...video, categoryName: categoryId };
+        })
+            .then(function (response) {
+                console.log(response)
             });
 
-            this.setState({
-                videos: videoData,
-                isLoading: false,
-                error: false,
-                location: countryCode,
-                label: GENERAL_LABEL + locationFullName,
-                locationFullName
-            });
+        // const videoRequest = YoutubeApi.get(BASE_URL_TO_FETCH_VIDEOS, {
+        //     params: {
+        //         //...baseParams,
+        //         regionCode: countryCode,
+        //         hl: this.state.language,
+        //         maxResults: 50,
+        //         order: "viewCount",
+        //         chart: "mostPopular",
+        //     }
+        // });
 
-            saveDataToSessionStorage(VIDEOS_KEY, { videos: videoData, countryCode, locationFullName });
-        })).catch(errors => {
-            this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
-        });
-    }
+        // const categoryRequest = YoutubeApi.get(BASE_URL_TO_FETCH_CATEGORIES, {
+        //     params: {
+        //         ...baseParams,
+        //         regionCode: countryCode,
+        //         hl: this.state.language
+        //     }
+        // });
 
-    getVideoCategoryById = (videos) => {
+        // axios.all([videoRequest, categoryRequest]).then(axios.spread((...responses) => {
+        //     const videoResponse = responses[0].data.items;
+        //     const categoryRequest = responses[1].data.items;
+        //     const locationFullName = this.state.countryData.find(country => country.ISO === countryCode).Country || countryCode;
+        //     const videoData = videoResponse.map(video => {
+        //         const categoryId = categoryRequest.find(category => category.id === video.snippet.categoryId).snippet.title;
+        //         return { ...video, categoryName: categoryId };
+        //     });
 
+        //     this.setState({
+        //         videos: videoData,
+        //         isLoading: false,
+        //         error: false,
+        //         location: countryCode,
+        //         label: GENERAL_LABEL + locationFullName,
+        //         locationFullName
+        //     });
+
+        //     saveDataToSessionStorage(VIDEOS_KEY, { videos: videoData, countryCode, locationFullName });
+        // })).catch(errors => {
+        //     this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
+        // });
     }
 
     setInitialVideoData = () => {
@@ -119,7 +126,7 @@ class MainConatainer extends Component {
 
             //Fetch video data by making an api call.
         } else {
-            this.fetchVideosBasedOnCountry(this.state.location);
+            this.fetchVideosBasedOnCountry();
         }
     }
 
@@ -185,7 +192,7 @@ class MainConatainer extends Component {
                                         title={locationFullName}
                                     /></p>
                                 <VideoContainer videos={videosToDispaly} />
-                                
+
                                 {/* Link to /all route*/}
                                 <Link to={{ pathname: '/all', state: { videos, location, locationFullName } }}>
                                     <span className={styles.linkToAllVideos}>See all popular videos...</span>
