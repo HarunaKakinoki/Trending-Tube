@@ -58,7 +58,9 @@ app.get('/api/*', (req, res, next) => {
     });
 
     res.send({ videos: videoData });
+    
   })).catch(err => {
+    res.status(500);
     res.send(err);
   });
 })

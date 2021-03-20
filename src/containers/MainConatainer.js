@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
+import axios from 'axios';
 import Loader from "react-loader-spinner";
 import ReactCountryFlag from 'react-country-flag';
-import axios from 'axios';
 import { countryData } from '../data/data';
 import { getUserLocation } from '../api/geoLocation';
 import { doesDataExistInSessionStorage, saveDataToSessionStorage } from '../utils/util';
@@ -36,18 +36,18 @@ class MainConatainer extends Component {
     }
 
     setInitialData = async () => {
-        const userLocation = await getUserLocation();
-        const userLanguage = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;
-        const userLocationFullName = this.state.countryData.find(country => country.ISO === userLocation).Country;
+        const userLocation = await getUserLocation();                                                                           //eg: "CA"
+        const userLocationName = this.state.countryData.find(country => country.ISO === userLocation).Country;                  //eg: "Canada"
+        const userLanguage = window.navigator.userLanguage || window.navigator.language || window.navigator.browserLanguage;    //eg: "en-US"
 
         this.setState({
             locationCode: userLocation,
+            locationName: userLocationName,
             language: userLanguage,
-            locationName: userLocationFullName
         }, () => this.setInitialVideoData());
     }
 
-    //Fetch vidoe data thorugh youtube data api & set response as state & session storage.
+    //Fetch video data from youtube data api & set response as state & session storage.
     fetchVideosBasedOnCountry = () => {
         const { locationCode, locationName, language } = this.state;
 
@@ -64,14 +64,16 @@ class MainConatainer extends Component {
                 error: false,
                 label: HEADER_LABEL + locationName,
             });
-            saveDataToSessionStorage(VIDEOS_KEY, { videos: res.data.videos, locationCode: this.state.locationCode, locationName: this.state.locationName });
-        
+
+            saveDataToSessionStorage(VIDEOS_KEY, { videos: res.data.videos, locationCode, locationName });
+
         }).catch(err => {
             this.setState({ isLoading: false, error: true, errorMessage: ERROR_MESSAGE_NO_COUNTRY_DATA });
         });
     }
 
     setInitialVideoData = () => {
+
         //When already feteched data exists on session storage, set them as state.
         if (doesDataExistInSessionStorage(VIDEOS_KEY)) {
             const { videos, locationCode, locationName } = JSON.parse(sessionStorage.getItem(VIDEOS_KEY));
@@ -114,7 +116,7 @@ class MainConatainer extends Component {
     render() {
         const { isLoading, error, errorMessage, videos, label, locationCode, locationName } = this.state;
         const videosToDisplay = videos.slice(0, 6); //Display only 6 videos.
-       
+
         return (
             <div className={styles.mainContainer}>
                 <h1><Link to="/">{APP_TITLE}</Link></h1>
@@ -137,7 +139,7 @@ class MainConatainer extends Component {
                             <React.Fragment>
                                 <p>{label}
                                     <ReactCountryFlag
-                                        locationCode={locationCode}
+                                        countryCode={locationCode}
                                         svg
                                         style={{
                                             width: '2em',

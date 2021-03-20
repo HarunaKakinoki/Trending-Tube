@@ -17,8 +17,8 @@ function AllVideosContainer() {
         history.push("/");
     } else {
         videos = location.state.videos;
-        countryCode = location.state.location || "Rank";
-        countryFullName = location.state.locationFullName
+        countryCode = location.state.locationCode;
+        countryFullName = location.state.locationName
     }
 
     return (
@@ -64,7 +64,6 @@ function AllVideosContainer() {
                                         <td className={styles.title}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer">{video.localized.title}</a></td>
                                         <td>{video.channelTitle}</td>
                                         <td className={styles.category}>{categoryName}</td>
-                                        {/* <td className={styles.description}>{description}</td>  */}
                                     </tr>
                                 );
                             })
