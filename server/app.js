@@ -2,6 +2,7 @@ const express = require('express');
 const PORT_NUMBER = "5000";
 
 const indexRouter = require('./routes/index');
+const allRouter = require('./routes/all');
 const apiRouter = require('./routes/api');
 
 const app = express();
@@ -15,4 +16,5 @@ app.listen(PORT_NUMBER, () => {
 
 //Routes.
 app.use('/', indexRouter);
+app.use('/all', allRouter);
 app.use('/api/videos', apiRouter);
