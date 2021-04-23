@@ -118,12 +118,22 @@
     display: block;
 }
 
+.allVideosHeader h1 {
+    font-size: 3em;
+    margin: 0.4em;
+}
+
+.allVideosHeader p {
+    margin: 0 auto;
+    font-size: 1.5em;
+}
+
 .allVideos table { /*<Table />*/
     width: 100%;
     color:#4a4e69;
     text-align: center;
     margin: 25px 0;
-    font-size: 0.9em;
+    font-size: 1.4em;
     overflow-y: auto;
 }
 
@@ -141,7 +151,7 @@
 }
 
 .allVideos tr {
-    height: 50px;
+    min-height: 50px;
     background-color: white;
     color:#4a4e69;
 }
@@ -170,7 +180,10 @@
 }
 
 .scrollToTop button {
+    padding: 0.6em;
+    font-size: 1.5em;
     color:white;
+    opacity: 0.9;
 }
 
 @keyframes fadeIn {
