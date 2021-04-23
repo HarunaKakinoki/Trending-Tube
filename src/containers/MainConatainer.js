@@ -128,8 +128,8 @@ class MainConatainer extends Component {
                         <Loader
                             type="ThreeDots"
                             color="#00BFFF"
-                            height={50}
-                            width={50} /> :
+                            height={80}
+                            width={80} /> :
 
                         //When error happens.
                         error ?

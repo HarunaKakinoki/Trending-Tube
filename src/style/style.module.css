@@ -1,12 +1,18 @@
 /*** Styling for Main Container ***/
+.mainContainer h1 { /* Site Header */
+    font-size: 3em;
+    margin: 0.6em;
+}
+
 .mainContainer p {
     width: 100%;
     display: block;
-    margin: 0.3em;
+    margin: 0.3em auto;
+    font-size: 1.5em;
 }
 
 .linkToAllVideos { /*Link at the bottom of the index page*/
-    font-size: 1em;
+    font-size: 2em;
     padding: 0.3em;
     background-color: #fcc271;
     color: white;
@@ -14,15 +20,14 @@
     position: fixed;
     bottom: 0.5rem;
     right: 0.5rem;
-    animation: fadeIn 500ms ease-in-out 0.7s both;
     cursor: pointer;
 }
 
 .linkToAllVideos:hover {
-    color: #4a4e69;
+    color: #ffd971;
 }
 
-/*** Styling for SearchForm Component ***/
+/******* Styling for SearchForm Component *******/
 .searchForm {
     /*To make input element and button vertical*/
     display: flex;
@@ -30,11 +35,22 @@
     justify-content: center;
 }
 
-/*** Styling for AutoComplete Component ***/
+.searchForm input {
+    font-size: 1.2em;
+}
+
+.searchForm button {
+    font-size: 1.5em;
+    margin-left: 0.3em;
+}
+
+
+/******* Styling for AutoComplete Component *******/
 .autocomplete {
+    font-size: 1.4em;
+    margin-right: 0.2em;
     position: relative;
     display: inline-block;
-    margin-right: 0.2em;
 }
 
 .autocompleteList {
@@ -56,13 +72,40 @@
 }
 
 .suggestions {
-    padding: 3px;
-    cursor: pointer;
+    padding: 0.2em;
     background-color: #fff;
     border-bottom: 1px solid #d4d4d4;
+    cursor: pointer;
 }
 
-/*** Styling for AllVideosContainer ***/
+/******* Styling for Video Component *******/
+.video {
+    width: 100%;
+    min-height: 30vh;
+    display: inline-block;
+    margin: 0.5em auto;
+    padding: 0.6em;
+    border-radius: 10px;
+    background-color: #fdf8e1;
+}
+
+.video iframe {
+    width: 90%;
+    height: 23vh;
+}
+
+.video p {
+    font-size: 1.2em;
+    margin: 0.3em;
+
+    /*To hide too long text*/
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/******* Styling for AllVideosContainer *******/
 
 .allVideos {
     width: 100%;
@@ -117,37 +160,7 @@
     text-overflow: ellipsis;
 }
 
-/* .videosTable .description {
-    text-align: left;
-    padding: 1em;
-    text-overflow: ellipsis;
-} */
-
-/*** Styling for Video Component ***/
-.video {
-    width: 100%;
-    display: inline-block;
-    margin: 0.3em auto;
-    padding: 0.5em;
-    border-radius: 10px;
-    background-color: #fdf8e1;
-}
-
-.video iframe {
-    width: 90%;
-}
-
-.video p {
-    font-size: 0.8em;
-    margin: 0.3em;
-
-    /*To hide too long text*/
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-/*** Styling for ScrollToTop Component ***/
+/******* Styling for ScrollToTop Component *******/
 .scrollToTop {
     position: fixed;
     bottom: 1rem;

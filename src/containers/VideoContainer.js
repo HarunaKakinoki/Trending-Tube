@@ -8,7 +8,7 @@ function VideoContainer({ videos }) {
                 <Row xs={1} md={2} lg={3} xl={3}>
                     {videos && videos.map((video, index) => {
                         return (
-                            <Col><Video key={video.id} index={index + 1} id={video.id} data={video.snippet} category={video.categoryName} /></Col>
+                            <Col key={video.id}><Video index={index + 1} id={video.id} data={video.snippet} category={video.categoryName} /></Col>
                         );
                     })}
                 </Row>

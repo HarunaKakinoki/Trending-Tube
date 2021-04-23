@@ -8,18 +8,15 @@ body {
   display: block;
   margin: 0 auto;
   padding: 0;
-  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif; */
   font-family: 'Red Hat Display', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: #bde0fe;
   color: #4a4e69;
+  text-align: center;
 }
 
 h1 {
-  margin: 1em;
-  font-size: 1.8em;
   font-family: "Spartan", sans-serif;
 }
 

@@ -1,9 +1,8 @@
-const express = require('express');
 const PORT_NUMBER = "3000";
-
-const indexRouter = require('./routes/index');
-const allRouter = require('./routes/all');
-const apiRouter = require('./routes/api');
+const express = require('express');
+const indexRouter  = require('./routes/index');
+const allRouter =  require('./routes/all');
+const apiRouter =  require('./routes/api');
 
 const app = express();
 
