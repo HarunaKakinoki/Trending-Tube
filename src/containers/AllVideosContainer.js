@@ -11,7 +11,7 @@ function AllVideosContainer() {
     const history = useHistory();
     const location = useLocation();
     const countryFlagStyle = { width: '2em', height: '2em', margin: '0.3em' };
-
+   
     //Restrict accessing /all page before loading video data.
     if (history.location.state === undefined) {
         history.push("/");
@@ -60,7 +60,7 @@ function AllVideosContainer() {
                                 return (
                                     <tr key={index}>
                                         <td className={styles.rank}>{index + 1}</td>
-                                        <td className={styles.thumnail}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer"><img src={video.thumbnails.default.url} alt="thumnail-image" /></a></td>
+                                        <td className={styles.thumbnail}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer"><img src={video.thumbnails.default.url} alt="youtube-thumbnail"/></a></td>
                                         <td className={styles.title}><a href={`${BASE_URL_TO_YOUTUBE_VIDEOS}${id}`} target="_blank" rel="noopener noreferrer">{video.localized.title}</a></td>
                                         <td>{video.channelTitle}</td>
                                         <td className={styles.category}>{categoryName}</td>
