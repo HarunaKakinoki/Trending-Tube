@@ -72,6 +72,11 @@ function AllVideosContainer() {
                 </Table>
             }
             <ScrollToTop />
+            <footer>
+                <div className={styles.copyright}>
+                    <small>&copy; Copyright 2021, Haruna Kakinoki</small>
+                </div>
+            </footer>
         </div>
     )
 }

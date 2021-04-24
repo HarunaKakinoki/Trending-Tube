@@ -1,10 +1,11 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import Video from '../components/Video/Video';
+import styles from '../style/style.module.css';
 
 function VideoContainer({ videos }) {
     return (
-            <Container fluid>
+            <Container fluid className={styles.videoContainer}>
                 <Row xs={1} md={2} lg={3} xl={3}>
                     {videos && videos.map((video, index) => {
                         return (

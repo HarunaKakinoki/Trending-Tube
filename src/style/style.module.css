@@ -1,5 +1,11 @@
 /*** Styling for Main Container ***/
-.mainContainer h1 { /* Site Header */
+.mainContainer {
+    width: 100%;
+    height: 100vh;
+}
+
+.mainContainer h1 {
+    /* Site Header */
     font-size: 3em;
     margin: 0.6em;
 }
@@ -11,7 +17,8 @@
     font-size: 1.5em;
 }
 
-.linkToAllVideos { /*Link at the bottom of the index page*/
+.linkToAllVideos {
+    /*Link at the bottom of the index page*/
     font-size: 2em;
     padding: 0.3em;
     background-color: #fcc271;
@@ -21,10 +28,12 @@
     bottom: 0.5rem;
     right: 0.5rem;
     cursor: pointer;
+    opacity: 0.9;
 }
 
 .linkToAllVideos:hover {
-    color: #ffd971;
+    /* color: #ffd971; */
+    opacity: 1;
 }
 
 /******* Styling for SearchForm Component *******/
@@ -43,7 +52,6 @@
     font-size: 1.5em;
     margin-left: 0.3em;
 }
-
 
 /******* Styling for AutoComplete Component *******/
 .autocomplete {
@@ -67,7 +75,7 @@
     right: 0;
 
     /*To avoid displaying too long list (Instead, list is scrollable)*/
-    max-height: 200px;
+    max-height: 20vh;
     overflow-y: auto;
 }
 
@@ -77,6 +85,11 @@
     border-bottom: 1px solid #d4d4d4;
     cursor: pointer;
 }
+/* 
+.videoContainer {
+    height: 50vh;
+    display: block;
+} */
 
 /******* Styling for Video Component *******/
 .video {
@@ -104,7 +117,6 @@
     text-overflow: ellipsis;
 }
 
-
 /******* Styling for AllVideosContainer *******/
 
 .allVideos {
@@ -128,9 +140,10 @@
     font-size: 1.5em;
 }
 
-.allVideos table { /*<Table />*/
+.allVideos table {
+    /*<Table />*/
     width: 100%;
-    color:#4a4e69;
+    color: #4a4e69;
     text-align: center;
     margin: 25px 0;
     font-size: 1.4em;
@@ -138,7 +151,7 @@
 }
 
 .allVideos tbody {
-    color:#4a4e69;
+    color: #4a4e69;
     overflow-y: auto;
 }
 
@@ -153,12 +166,13 @@
 .allVideos tr {
     min-height: 50px;
     background-color: white;
-    color:#4a4e69;
+    color: #4a4e69;
 }
 
 .allVideos td {
     vertical-align: middle;
 }
+
 /* Rank*/
 .allVideos .rank {
     font-size: 1.5em;
@@ -180,10 +194,9 @@
 }
 
 .scrollToTop button {
-    padding: 0.6em;
+    padding: 0.2em 0.6em;
     font-size: 1.5em;
-    color:white;
-    opacity: 0.9;
+    color: white;
 }
 
 @keyframes fadeIn {
@@ -192,5 +205,120 @@
     }
     to {
         opacity: 1;
+    }
+}
+
+footer {
+    height: 10vh;
+}
+
+/********** Responsive Settings *************/
+/* Mobile Devices */
+@media (max-width: 767px) {
+    .mainContainer h1, .allVideosHeader h1{
+        font-size: 2em;
+    }
+
+    .mainContainer p, .allVideosHeader p {
+        font-size: 1em;
+    }
+
+    .searchForm input {
+        font-size: 1em;
+    }
+
+    .searchForm button {
+        font-size: 1em;
+    }
+
+    .video {
+        min-height: 15vh;
+        padding: 0.4em;
+    }
+
+    .video iframe {
+        height: 26vh;
+    }
+
+    .video p {
+        margin: 0;
+    }
+
+    .linkToAllVideos {
+        font-size: 0.8em;
+    }
+
+    .allVideos table {
+        font-size: 1em;
+    }
+
+    footer .copyright {
+        margin-top: 0.3em;
+    }
+
+    .allVideos table {
+        /*<Table />*/
+        font-size: 0.8em;
+    }
+}
+
+/* Tablet */
+@media (min-width: 768px) {
+    .mainContainer h1 {
+        margin: 0.3em;
+    }
+
+    .video {
+        min-height: 10vh;
+        padding: 0.4em;
+    }
+
+    .video iframe {
+        height: 18vh;
+    }
+
+    .video p {
+        margin: 0;
+    }
+
+    .linkToAllVideos {
+        font-size: 1.3em;
+    }
+
+    .allVideos table {
+        font-size: 1em;
+    }
+
+    footer .copyright {
+        margin-top: 1em;
+    }
+}
+
+/* Desktop */
+@media only screen and (min-width: 1081px) and (max-width: 1200px) {
+    .mainContainer h1 {
+        margin: 0.3em auto;
+    }
+
+    .video {
+        height: 18vh;
+        padding: 0.4em;
+    }
+
+    .video iframe {
+        height: 20vh;
+    }
+
+    .video p {
+        margin: 0 auto 0.2em auto;
+    }
+
+    .linkToAllVideos {
+        font-size: 1.5em;
+    }
+
+    .allVideos table {
+        /*<Table />*/
+        font-size: 1.2em;
     }
 }

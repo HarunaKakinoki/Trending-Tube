@@ -156,6 +156,11 @@ class MainConatainer extends Component {
                                 </Link>
                             </React.Fragment>
                 }
+                <footer>
+                    <div className={styles.copyright}>
+                        <small>&copy; Copyright 2021, Haruna Kakinoki</small>
+                    </div>
+                </footer>
             </div>
 
 
