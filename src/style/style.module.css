@@ -19,7 +19,7 @@
 
 .linkToAllVideos {
     /*Link at the bottom of the index page*/
-    font-size: 2em;
+    font-size: 1.8em;
     padding: 0.3em;
     background-color: #fcc271;
     color: white;
@@ -85,16 +85,11 @@
     border-bottom: 1px solid #d4d4d4;
     cursor: pointer;
 }
-/* 
-.videoContainer {
-    height: 50vh;
-    display: block;
-} */
 
 /******* Styling for Video Component *******/
 .video {
     width: 100%;
-    min-height: 30vh;
+    height: 32vh;
     display: inline-block;
     margin: 0.5em auto;
     padding: 0.6em;
@@ -104,12 +99,12 @@
 
 .video iframe {
     width: 90%;
-    height: 23vh;
+    height: 80%;
 }
 
 .video p {
     font-size: 1.2em;
-    margin: 0.3em;
+    margin: 0 0 0.1em 0;
 
     /*To hide too long text*/
     white-space: nowrap;
@@ -223,16 +218,12 @@ footer {
         font-size: 1em;
     }
 
-    .searchForm input {
-        font-size: 1em;
-    }
-
-    .searchForm button {
+    .searchForm input, .searchForm button {
         font-size: 1em;
     }
 
     .video {
-        min-height: 15vh;
+        height: 38vh;
         padding: 0.4em;
     }
 
@@ -263,13 +254,13 @@ footer {
 }
 
 /* Tablet */
-@media (min-width: 768px) {
+@media only screen and (min-width: 768px) and (max-width: 1080px) {
     .mainContainer h1 {
         margin: 0.3em;
     }
 
     .video {
-        min-height: 10vh;
+        height: 28vh;
         padding: 0.4em;
     }
 
@@ -301,13 +292,9 @@ footer {
     }
 
     .video {
-        height: 18vh;
         padding: 0.4em;
     }
 
-    .video iframe {
-        height: 20vh;
-    }
 
     .video p {
         margin: 0 auto 0.2em auto;
